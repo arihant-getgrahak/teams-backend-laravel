@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {
+    
     //Register API (POST, Formdata)
     public function register(Request $request)
     {
@@ -76,26 +77,24 @@ class ApiController extends Controller
         ]);
     }
 
-    //Refresh token API(GET)
-    public function refreshToken()
-    {
-        $newToken = auth()->refresh();
-
-        return response()->json([
-            "status" => true,
-            "message" => "Token refreshed",
-            "token" => $newToken
-        ]);
-    }
 
     //Logout API(GET)
     public function logout()
     {
-        auth()->logout();
+        $token = JWTAuth::getToken();
 
-        return response()->json([
-            "status" => true,
-            "message" => "User logged out successfully"
-        ]);
+        // invalidate token
+        $invalidate = JWTAuth::invalidate($token);
+
+        if($invalidate) {
+            return response()->json([
+                'meta' => [
+                    'code' => 200,
+                    'status' => 'success',
+                    'message' => 'Successfully logged out',
+                ],
+                'data' => [],
+            ]);
+        }
     }
 }
