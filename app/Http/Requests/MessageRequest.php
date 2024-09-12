@@ -11,9 +11,9 @@ class MessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // if(auth()->check()) {
-        //     return true;
-        // }
+        if(auth()->check()) {
+            return true;
+        }
         return false;
     }
 
