@@ -7,20 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth; 
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class ApiController extends Controller
 {
     
     //Register API (POST, Formdata)
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        //Data validation
-        $request->validate([
-            "name" => "required",
-            "email" => "required|email|unique:users",
-            "password" => "required|confirmed"
-        ]);
-
         // User Model
         User::create([
             "name" => $request->name,
@@ -36,13 +31,8 @@ class ApiController extends Controller
     }
 
     //Login API (POST, Formdata)
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            "email" => "required|email",
-            "password" => "required"
-        ]);
-
         // JWTAuth
         $token = JWTAuth::attempt([
             "email" => $request->email,
