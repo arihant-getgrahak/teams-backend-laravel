@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSendEvent;
+use App\Jobs\SendMessage;
 use App\Models\Message;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
@@ -14,24 +16,13 @@ class MessageController extends Controller
             ->orWhere('receiver_id', auth()->user()->id)
             ->with(["sender:id,name", "receiver:id,name"])
             ->get();
-        // ->get([
-        //     "message",
-        //     "sender_id",
-        //     "receiver_id",
-        // ]);
 
-        // dd($message);
         $message = [$message];
+
         $response = fractal($message, new MessageTransform())->toArray();
         if (count($response) == 1) {
             $response = $response["data"][0];
         }
-
-        // dd(count($response) == 1 ? $response[0]: $response);
-
-        // echo "<pre>";
-        // print_r($response["data"][0]);
-        // echo "</pre>";
 
         return response()->json([
             "status" => true,
@@ -49,6 +40,9 @@ class MessageController extends Controller
         ];
 
         Message::create($data);
+
+        // broadcast(new MessageSendEvent($data))->toOthers();
+        SendMessage::dispatch($message);
         return response()->json([
             "status" => true,
             "message" => "Message sent successfully"
