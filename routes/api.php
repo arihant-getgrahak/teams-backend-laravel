@@ -2,14 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Auth\Middleware\Authenticate;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
 
 
 Route::group(["prefix" => "auth"], function () {
-    Route::post("register", [ApiController::class, "register"]);
-    Route::post("login", [ApiController::class, "login"]);
+    Route::post("register", [AuthController::class, "register"]);
+    Route::post("login", [AuthController::class, "login"]);
 });
 
 Route::group([
@@ -19,8 +18,8 @@ Route::group([
 });
 
 Route::group(["prefix" => "/user"], function () {
-    Route::get("profile", [ApiController::class, "profile"]);
-    Route::get("logout", [ApiController::class, "logout"]);
+    Route::get("profile", [AuthController::class, "profile"]);
+    Route::get("logout", [AuthController::class, "logout"]);
 })->middleware("auth:api");
 
 Route::group(["prefix" => "message"], function () {
