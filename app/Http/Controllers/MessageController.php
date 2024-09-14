@@ -2,23 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
+use App\Transformers\MessageTransform;
 class MessageController extends Controller
 {
     public function display()
     {
-        $message = Message::where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->user()->id)->get([
-            "message",
-            "sender_id",
-            "receiver_id"
-        ]);
+        $message = Message::where('sender_id', auth()->user()->id)
+            ->orWhere('receiver_id', auth()->user()->id)
+            ->with(["sender:id,name", "receiver:id,name"])
+            ->get();
+        // ->get([
+        //     "message",
+        //     "sender_id",
+        //     "receiver_id",
+        // ]);
+
+        // dd($message);
+        $message = [$message];
+        $response = fractal($message, new MessageTransform())->toArray();
+        if (count($response) == 1) {
+            $response = $response["data"][0];
+        }
+
+        // dd(count($response) == 1 ? $response[0]: $response);
+
+        // echo "<pre>";
+        // print_r($response["data"][0]);
+        // echo "</pre>";
 
         return response()->json([
             "status" => true,
-            "message" => $message
+            "message" => $response,
         ]);
     }
 
