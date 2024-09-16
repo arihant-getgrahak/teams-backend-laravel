@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UserController;
 
 
 Route::group(["prefix" => "auth"], function () {
@@ -25,6 +25,8 @@ Route::group(["prefix" => "/user"], function () {
 Route::group(["prefix" => "message"], function () {
     Route::get("/", [MessageController::class, "display"]);
     Route::post("/create", [MessageController::class, "store"]);
-    Route::post("/create", [MessageController::class, "store"]);
+    Route::post("/update", [MessageController::class, "update"]);
     Route::delete("/delete", [MessageController::class, "delete"]);
 })->middleware("auth:api");
+
+Route::get("/search/{id}", [UserController::class, "search"]);

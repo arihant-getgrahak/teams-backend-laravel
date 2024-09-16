@@ -26,7 +26,7 @@ class MessageRequest extends FormRequest
     {
         return [
             'message' => 'required|string|max:255',
-            'receiver_id' => 'required|integer|exists:users,id',
+            'receiver_id' => 'required|string|exists:users,id',
         ];
     }
 
@@ -34,7 +34,7 @@ class MessageRequest extends FormRequest
         return [
             'receiver_id.exists' => 'The user you are trying to send a message to does not exist',
             'receiver_id.required' => 'The user you are trying to send a message to is required',
-            'receiver_id.integer' => 'The user you are trying to send a message to must be an integer',
+            'receiver_id.string' => 'The user you are trying to send a message to must be a string',
             'message.required' => 'The message you are trying to send is required',
             'message.max' => 'The message you are trying to send is too long',
             'message.string' => 'The message you are trying to send must be a string',

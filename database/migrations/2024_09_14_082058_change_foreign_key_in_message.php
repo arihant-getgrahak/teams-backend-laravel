@@ -10,13 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->integer("sender_id");
-            $table->integer("receiver_id");
-            $table->text("message");
-            $table->boolean("isUpdate")->default(false);
-            $table->timestamps();
+        Schema::table('messages', function (Blueprint $table) {
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade')->change();
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade')->change();
+
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::table('messages', function (Blueprint $table) {
+            //
+        });
     }
 };

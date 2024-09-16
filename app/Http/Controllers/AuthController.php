@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth; 
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-    
+
     //Register API (POST, Formdata)
     public function register(RegisterRequest $request)
     {
@@ -38,7 +38,7 @@ class AuthController extends Controller
             "password" => $request->password
         ]);
 
-        if(!empty($token)){
+        if (!empty($token)) {
 
             return response()->json([
                 "status" => true,
@@ -75,7 +75,7 @@ class AuthController extends Controller
         // invalidate token
         $invalidate = JWTAuth::invalidate($token);
 
-        if($invalidate) {
+        if ($invalidate) {
             return response()->json([
                 'meta' => [
                     'code' => 200,
