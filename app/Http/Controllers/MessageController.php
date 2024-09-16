@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSendEvent;
 use App\Jobs\SendMessage;
 use App\Models\Message;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
 use App\Transformers\MessageTransform;
+use App\Http\Requests\MessageUpdateRequest;
 
 class MessageController extends Controller
 {
@@ -66,5 +66,10 @@ class MessageController extends Controller
             "status" => false,
             "message" => "Unable to delete message",
         ]);
+    }
+
+    public function update(MessageUpdateRequest $request)
+    {
+        dd(request()->all());
     }
 }
