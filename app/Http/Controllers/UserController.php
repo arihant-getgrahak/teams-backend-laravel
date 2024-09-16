@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Transformers\UserSearchTransform;
 
 class UserController extends Controller
 {
@@ -13,11 +14,11 @@ class UserController extends Controller
         if (count($user) == 0) {
             return response()->json(['message' => 'No user found'], 404);
         }
+        $user = [$user];
+        $response = fractal($user, new UserSearchTransform())->toArray();
         return response()->json([
-            "user" => $user
+            "user" => $response["data"][0]["data"]
         ], 200);
     }
-
-    function startChat(Request $request){}
 }
 
