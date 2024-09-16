@@ -11,6 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('messages', function (Blueprint $table) {
+            $table->uuid("sender_id")->change();
+            $table->uuid("receiver_id")->change();
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade')->change();
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade')->change();
 
