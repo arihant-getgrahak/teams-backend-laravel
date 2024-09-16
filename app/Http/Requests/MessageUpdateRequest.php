@@ -46,9 +46,7 @@ class MessageUpdateRequest extends FormRequest
      */
     protected function failedAuthorization()
     {
-        // throw new AuthorizationException($this->error[0]);
         throw new AuthorizationException($this->error);
-
     }
 
 
