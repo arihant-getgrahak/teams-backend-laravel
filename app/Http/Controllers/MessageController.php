@@ -15,14 +15,6 @@ class MessageController extends Controller
 {
     public function display($id)
     {
-
-
-        // $message = Message::where('sender_id', auth()->user()->id)
-
-        //     ->orWhere('receiver_id', auth()->user()->id)
-        //     ->with(["sender:id,name", "receiver:id,name"])
-        //     ->get();
-
         $message = Message::where(function ($query) use ($id) {
             $query->where('sender_id', auth()->user()->id)
                 ->where('receiver_id', $id);
