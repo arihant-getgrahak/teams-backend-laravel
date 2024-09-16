@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
@@ -18,7 +17,6 @@ class AuthController extends Controller
     {
         // User Model
         User::create([
-            "id" => Str::uuid(),
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password)

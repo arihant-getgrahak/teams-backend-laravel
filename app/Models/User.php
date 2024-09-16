@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Str;
 use Tymon\JWTAuth\Contracts\JWTSubject; 
 
 class User extends Authenticatable implements JWTSubject
@@ -22,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        "id"
+        // "id"
     ];
 
     /**
@@ -36,6 +37,14 @@ class User extends Authenticatable implements JWTSubject
     ];
     protected $keyType = 'string';
     public $incrementing = false;
+
+    public static function boot() {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

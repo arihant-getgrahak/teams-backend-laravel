@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Str;
 
 class Message extends Model
 {
@@ -13,8 +14,15 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'message',
-        "id"
     ];
+
+    public static function boot() {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
     protected $keyType = 'string';
     public $incrementing = false;
 
