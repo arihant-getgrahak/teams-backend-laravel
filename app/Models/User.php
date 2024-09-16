@@ -35,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
-    protected $keyType = 'string';
+    public $keyType = 'string';
     public $incrementing = false;
 
     public static function boot() {

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->integer("sender_id");
             $table->integer("receiver_id");
             $table->text("message");
-            $table->boolean(false)->default(false);
+            $table->boolean("isUpdate")->default(false);
             $table->timestamps();
         });
     }

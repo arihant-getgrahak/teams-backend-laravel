@@ -25,8 +25,8 @@ Route::group(["prefix" => "/user"], function () {
 Route::group(["prefix" => "message"], function () {
     Route::get("/", [MessageController::class, "display"]);
     Route::post("/create", [MessageController::class, "store"]);
-    Route::post("/create", [MessageController::class, "store"]);
+    Route::post("/update", [MessageController::class, "update"]);
     Route::delete("/delete", [MessageController::class, "delete"]);
 })->middleware("auth:api");
 
-Route::get("/search/{id}",[UserController::class,"search"]);
+Route::get("/search/{id}", [UserController::class, "search"]);

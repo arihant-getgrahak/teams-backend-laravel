@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSendEvent;
 use App\Jobs\SendMessage;
 use App\Models\Message;
 use App\Http\Requests\MessageRequest;
@@ -42,8 +43,8 @@ class MessageController extends Controller
 
         Message::create($data);
 
-        // broadcast(new MessageSendEvent($data))->toOthers();
-        SendMessage::dispatch($message);
+        broadcast(new MessageSendEvent($data))->toOthers();
+        // SendMessage::dispatch($message);
         return response()->json([
             "status" => true,
             "message" => "Message sent successfully"
@@ -70,6 +71,18 @@ class MessageController extends Controller
 
     public function update(MessageUpdateRequest $request)
     {
-        dd(request()->all());
+        $message = Message::find($request->message_id);
+        if ($message->isUpdate) {
+            return response()->json([
+                "status" => false,
+                "message" => "Message already updated"
+            ]);
+        }
+        $message->update(["message" => $request->message, "isUpdate" => true]);
+        return response()->json([
+            "status" => true,
+            "message" => "Message updated successfully",
+            "data" => $message
+        ]);
     }
 }
