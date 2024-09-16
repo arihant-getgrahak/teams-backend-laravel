@@ -9,6 +9,7 @@ use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
 use App\Transformers\MessageTransform;
 use App\Http\Requests\MessageUpdateRequest;
+use DB;
 
 class MessageController extends Controller
 {
@@ -71,18 +72,49 @@ class MessageController extends Controller
 
     public function update(MessageUpdateRequest $request)
     {
-        $message = Message::find($request->message_id);
-        if ($message->isUpdate) {
+        //     $message = Message::where($request->message_id)->first();
+        //     // dd($message);
+        //     if ($message->isUpdate) {
+        //         return response()->json([
+        //             "status" => false,
+        //             "message" => "Message already updated"
+        //         ]);
+        //     }
+        //     $message->update(["message" => $request->message, "isUpdate" => true,"updated_at" => now()]);
+        //     return response()->json([
+        //         "status" => true,
+        //         "message" => "Message updated successfully",
+        //         "data" => $message
+        //     ]);
+
+        DB::beginTransaction();
+        try {
+
+            $message = Message::where("id", $request->message_id)->first();
+            // dd($message);
+            if ($message->isUpdate) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message already updated"
+                ],500);
+            }
+
+            $message->update(["message" => $request->message, "isUpdate" => true, "updated_at" => now()]);
+
+            DB::commit();
+
+            return response()->json([
+                "status" => true,
+                "message" => "Message updated successfully",
+                "data" => $message
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 "status" => false,
-                "message" => "Message already updated"
-            ]);
+                "message" => $e->getMessage(),
+            ], 500);
         }
-        $message->update(["message" => $request->message, "isUpdate" => true]);
-        return response()->json([
-            "status" => true,
-            "message" => "Message updated successfully",
-            "data" => $message
-        ]);
     }
 }

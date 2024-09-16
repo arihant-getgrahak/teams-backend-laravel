@@ -14,6 +14,7 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'message',
+        "isUpdate"
     ];
 
     public static function boot() {
