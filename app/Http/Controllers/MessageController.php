@@ -24,7 +24,9 @@ class MessageController extends Controller
                     ->where('sender_id', $id);
             })
             ->with(["sender:id,name", "receiver:id,name"])
-            ->get();
+            ->paginate(20);
+
+        $totalCount = $message->total();
 
         $message = [$message];
 
@@ -36,6 +38,7 @@ class MessageController extends Controller
         return response()->json([
             "status" => true,
             "message" => "Display Message",
+            "totalMessageCount" => $totalCount,
             "data" => $response["data"]
         ]);
     }

@@ -27,7 +27,7 @@ class MessageTransform extends TransformerAbstract
                 "isUpdate"=> $item->isUpdate,
                 "updated_at" => $item->updated_at,
                 "isDeleted" => $item->isDelete,
-                "deleted_at" => $item->deletedAt
+                "deleted_at" => $item->deletedAt,
             ];
         }
         return [
