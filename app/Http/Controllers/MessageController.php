@@ -13,12 +13,20 @@ use DB;
 
 class MessageController extends Controller
 {
-    public function display()
+    public function display($id)
     {
-        $message = Message::where('sender_id', auth()->user()->id)
-            ->orWhere('receiver_id', auth()->user()->id)
+        $message = Message::where(function ($query) use ($id) {
+            $query->where('sender_id', auth()->user()->id)
+                ->where('receiver_id', $id);
+        })
+            ->orWhere(function ($query) use ($id) {
+                $query->where('receiver_id', auth()->user()->id)
+                    ->where('sender_id', $id);
+            })
             ->with(["sender:id,name", "receiver:id,name"])
-            ->get();
+            ->paginate(20);
+
+        $totalCount = $message->total();
 
         $message = [$message];
 
@@ -29,7 +37,9 @@ class MessageController extends Controller
 
         return response()->json([
             "status" => true,
-            "message" => $response,
+            "message" => "Display Message",
+            "totalMessageCount" => $totalCount,
+            "data" => $response["data"]
         ]);
     }
 
@@ -54,21 +64,6 @@ class MessageController extends Controller
 
     public function delete(MessageDeleteRequest $request)
     {
-        // $id = $request->message_id;
-
-        // $isDelete = Message::where("id", $id)->delete();
-        // if ($isDelete) {
-        //     return response()->json([
-        //         "status" => true,
-        //         "message" => "Message deleted successfully",
-        //     ]);
-        // }
-
-        // return response()->json([
-        //     "status" => false,
-        //     "message" => "Unable to delete message",
-        // ]);
-
         DB::beginTransaction();
         try {
             $message = Message::where("id", $request->message_id)->first();

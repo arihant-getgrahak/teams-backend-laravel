@@ -18,15 +18,19 @@ Route::group([
 });
 
 Route::group(["prefix" => "/user"], function () {
-    Route::get("profile", [AuthController::class, "profile"]);
-    Route::get("logout", [AuthController::class, "logout"]);
-})->middleware("auth:api");
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::get("profile", [AuthController::class, "profile"]);
+        Route::get("logout", [AuthController::class, "logout"]);
+        Route::get("/search/{query}", [UserController::class, "search"]);
+    });
+});
 
 Route::group(["prefix" => "message"], function () {
-    Route::get("/", [MessageController::class, "display"]);
-    Route::post("/create", [MessageController::class, "store"]);
-    Route::post("/update", [MessageController::class, "update"]);
-    Route::delete("/delete", [MessageController::class, "delete"]);
-})->middleware("auth:api");
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::get("/{id}", [MessageController::class, "display"]);
+        Route::post("/create", [MessageController::class, "store"]);
+        Route::put("/update", [MessageController::class, "update"]);
+        Route::delete("/delete", [MessageController::class, "delete"]);
+    });
+});
 
-Route::get("/search/{id}", [UserController::class, "search"]);
