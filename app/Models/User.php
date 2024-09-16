@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        "id"
     ];
 
     /**
@@ -33,6 +34,8 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * Get the attributes that should be cast.

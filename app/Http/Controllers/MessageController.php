@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
 use App\Transformers\MessageTransform;
+use Str;
 class MessageController extends Controller
 {
     public function display()
@@ -34,6 +35,7 @@ class MessageController extends Controller
     {
         $message = $request->message;
         $data = [
+            "id" => Str::uuid(),
             "message" => $message,
             "sender_id" => auth()->user()->id,
             "receiver_id" => $request->receiver_id

@@ -13,7 +13,10 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'message',
+        "id"
     ];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     public function sender()
     {
