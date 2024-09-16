@@ -14,7 +14,9 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'message',
-        "isUpdate"
+        "isUpdate",
+        "isDelete",
+        "deletedAt"
     ];
 
     public static function boot() {

@@ -54,38 +54,50 @@ class MessageController extends Controller
 
     public function delete(MessageDeleteRequest $request)
     {
-        $id = $request->message_id;
+        // $id = $request->message_id;
 
-        $isDelete = Message::where("id", $id)->delete();
-        if ($isDelete) {
+        // $isDelete = Message::where("id", $id)->delete();
+        // if ($isDelete) {
+        //     return response()->json([
+        //         "status" => true,
+        //         "message" => "Message deleted successfully",
+        //     ]);
+        // }
+
+        // return response()->json([
+        //     "status" => false,
+        //     "message" => "Unable to delete message",
+        // ]);
+
+        DB::beginTransaction();
+        try {
+            $message = Message::where("id", $request->message_id)->first();
+            if ($message->isDelete) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message already deleted"
+                ], 500);
+            }
+
+            $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
+
+            DB::commit();
             return response()->json([
                 "status" => true,
-                "message" => "Message deleted successfully",
-            ]);
+                "data" => $message,
+                "message" => "Message deleted successfully"
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            "status" => false,
-            "message" => "Unable to delete message",
-        ]);
     }
 
     public function update(MessageUpdateRequest $request)
     {
-        //     $message = Message::where($request->message_id)->first();
-        //     // dd($message);
-        //     if ($message->isUpdate) {
-        //         return response()->json([
-        //             "status" => false,
-        //             "message" => "Message already updated"
-        //         ]);
-        //     }
-        //     $message->update(["message" => $request->message, "isUpdate" => true,"updated_at" => now()]);
-        //     return response()->json([
-        //         "status" => true,
-        //         "message" => "Message updated successfully",
-        //         "data" => $message
-        //     ]);
 
         DB::beginTransaction();
         try {
@@ -96,7 +108,7 @@ class MessageController extends Controller
                 return response()->json([
                     "status" => false,
                     "message" => "Message already updated"
-                ],500);
+                ], 500);
             }
 
             $message->update(["message" => $request->message, "isUpdate" => true, "updated_at" => now()]);
