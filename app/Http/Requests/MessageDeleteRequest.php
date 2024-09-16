@@ -14,20 +14,24 @@ class MessageDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(!auth()->check()) {
+        if (!auth()->check()) {
             $this->error = "Please login first";
             return false;
         }
         $message_id = $this->message_id;
+        if (!$message_id) {
+            $this->error = "The message id is required";
+            return false;
+        }
         $user_id = auth()->user()->id;
 
-        if(!Message::where('id', $message_id)->where('sender_id', $user_id)->exists()){
+        if (!Message::where('id', $message_id)->where('sender_id', $user_id)->exists()) {
             return true;
         }
         return true;
     }
 
-        /**
+    /**
      * Handle a failed authorization attempt.
      *
      * @return void
