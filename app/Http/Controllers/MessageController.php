@@ -46,7 +46,7 @@ class MessageController extends Controller
             "message" => "Display Message",
             "totalMessageCount" => $totalCount,
             "data" => $response["data"]
-        ]);
+        ], 200);
     }
 
     public function store(MessageRequest $request)
@@ -66,7 +66,7 @@ class MessageController extends Controller
         return response()->json([
             "status" => true,
             "message" => "Message sent successfully"
-        ]);
+        ], 200);
     }
 
     public function delete(MessageDeleteRequest $request)
@@ -89,6 +89,7 @@ class MessageController extends Controller
                 "data" => $message,
                 "message" => "Message deleted successfully"
             ], 200);
+            
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
