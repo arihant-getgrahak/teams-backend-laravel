@@ -1,9 +1,9 @@
 
 # Teams-app Backend
 
-A Teams app backend which is responsible for the API's, that perform the functionality of chat either it is group or individual message. User is also able to perform the CRUD operations  like create message, update message only once and can also delete messages.
+A teams backend api used to authenticate user (login and register), show user profile. User can initiate chat, check history of conversation and user can update message only once and can also delete messages.
 
-
+Postman collection [link](https://api.postman.com/collections/18412970-3a4378bf-eb64-4286-9236-dd636112328f?access_key=PMAT-01J7ZXA4R3NXET9FME64S8DD12)
 ## API Reference
 
 #### Get the user register
@@ -35,7 +35,7 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   GET  /api/user/profile
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
@@ -46,7 +46,7 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   GET  /api/user/logout
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
@@ -57,7 +57,7 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   GET  /api/user/search/{query}
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
@@ -68,7 +68,7 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   GET  /api/user/search/{query}
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
@@ -79,25 +79,25 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   POST  /api/message/create
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
 | `authorization`  | `Bearer` Token        | **Required**. |
 
-``Body
+Body
 | Parameter       | Type               | Description          |
 | :-------------- | :----------------  | :------------------- |
 | `message`       | `string`           | **Required**.        |
 | `receiver_id`   | `id`               | **Required**.        |
-| `type`          | `individual|group` | **Required**.        |
+| `type`          | `enum individual,group` | **Required**.        |
 
 #### Display message
 
 ```http
   GET  /api/message/{message_id}
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
@@ -108,13 +108,13 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   PUT  /api/message/update
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
 | `authorization`  | `Bearer` Token        | **Required**. |
 
-``Body
+Body
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `message_id`     | `{id}`                | **Required**. |
@@ -125,13 +125,13 @@ A Teams app backend which is responsible for the API's, that perform the functio
 ```http
   DELETE  /api/message/delete
 ```
-``Headers
+Headers
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
 | `accept`         | `application/json`    | **Required**. |
 | `authorization`  | `Bearer` Token        | **Required**. |
 
-``Body
+Body
 | Parameter        | Type                  | Description   |
 | :-------------   | :------------------   | :-------------|
 | `message_id`     | `{id}`                | **Required**. |
