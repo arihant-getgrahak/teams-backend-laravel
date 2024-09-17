@@ -16,7 +16,8 @@ class Message extends Model
         'message',
         "isUpdate",
         "isDelete",
-        "deletedAt"
+        "deletedAt",
+        "type"
     ];
 
     public static function boot() {
