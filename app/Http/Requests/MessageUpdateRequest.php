@@ -33,7 +33,6 @@ class MessageUpdateRequest extends FormRequest
             $this->error = "You are not authorized to update this message";
             return false;
         }
-        // dd($message);
         return true;
     }
 

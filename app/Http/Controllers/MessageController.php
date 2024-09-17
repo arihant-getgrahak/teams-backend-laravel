@@ -71,7 +71,7 @@ class MessageController extends Controller
             if ($message->isDelete) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Message already deleted"
+                    "message" => "You can delete message once"
                 ], 500);
             }
 
@@ -103,7 +103,7 @@ class MessageController extends Controller
             if ($message->isUpdate) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Message already updated"
+                    "message" => "You can update message once"
                 ], 500);
             }
 
