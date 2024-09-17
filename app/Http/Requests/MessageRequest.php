@@ -27,6 +27,7 @@ class MessageRequest extends FormRequest
         return [
             'message' => 'required|string|max:255',
             'receiver_id' => 'required|string|exists:users,id',
+            "type" => "required|string|in:individual,group"
         ];
     }
 
@@ -38,6 +39,8 @@ class MessageRequest extends FormRequest
             'message.required' => 'The message you are trying to send is required',
             'message.max' => 'The message you are trying to send is too long',
             'message.string' => 'The message you are trying to send must be a string',
+            'type.in'=> 'The type you are trying to send is not valid',
+            "type.required"=>"The type you are trying to send is required"
         ];
     }
 }

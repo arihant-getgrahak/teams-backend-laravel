@@ -49,7 +49,8 @@ class MessageController extends Controller
         $data = [
             "message" => $message,
             "sender_id" => auth()->user()->id,
-            "receiver_id" => $request->receiver_id
+            "receiver_id" => $request->receiver_id,
+            "type"=> $request->type
         ];
 
         Message::create($data);

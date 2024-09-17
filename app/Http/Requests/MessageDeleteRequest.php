@@ -24,9 +24,15 @@ class MessageDeleteRequest extends FormRequest
             return false;
         }
         $user_id = auth()->user()->id;
+        $message = Message::where('id', $message_id)->where('sender_id', $user_id)->exists();
+        if (!$message) {
+            return false;
+        }
+        dd(gettype($message->type));
 
-        if (!Message::where('id', $message_id)->where('sender_id', $user_id)->exists()) {
-            return true;
+        if ($message->type !== "group") {
+            $this->error = "You can only delete message in group conversation";
+            return false;
         }
         return true;
     }
