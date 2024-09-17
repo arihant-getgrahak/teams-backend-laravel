@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSendEvent;
-use App\Jobs\SendMessage;
 use App\Models\Message;
+use App\Models\User;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\MessageDeleteRequest;
 use App\Transformers\MessageTransform;
@@ -13,8 +13,14 @@ use DB;
 
 class MessageController extends Controller
 {
-    public function display($id)
+    public function display(string $id)
     {
+        if(!User::where("id", $id)->exists()){
+            return response()->json([
+                "status"=>false,
+                "message" => "User not found"
+            ], 404);
+        }
         $message = Message::where(function ($query) use ($id) {
             $query->where('sender_id', auth()->user()->id)
                 ->where('receiver_id', $id);
@@ -40,7 +46,7 @@ class MessageController extends Controller
             "message" => "Display Message",
             "totalMessageCount" => $totalCount,
             "data" => $response["data"]
-        ]);
+        ], 200);
     }
 
     public function store(MessageRequest $request)
@@ -60,7 +66,7 @@ class MessageController extends Controller
         return response()->json([
             "status" => true,
             "message" => "Message sent successfully"
-        ]);
+        ], 200);
     }
 
     public function delete(MessageDeleteRequest $request)
@@ -83,6 +89,7 @@ class MessageController extends Controller
                 "data" => $message,
                 "message" => "Message deleted successfully"
             ], 200);
+            
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

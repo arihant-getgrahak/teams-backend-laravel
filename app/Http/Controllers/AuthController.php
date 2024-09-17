@@ -26,7 +26,7 @@ class AuthController extends Controller
         return response()->json([
             "status" => true,
             "message" => "User registered successfully"
-        ]);
+        ], 200);
     }
 
     //Login API (POST, Formdata)
@@ -44,14 +44,14 @@ class AuthController extends Controller
                 "status" => true,
                 "message" => "User logged in succcessfully",
                 "token" => $token
-            ]);
+            ], 200);
         }
 
         // Response
         return response()->json([
             "status" => false,
             "message" => "Invalid details"
-        ]);
+        ], 401);
     }
 
     //Profile API (GET, autherization token value JWT)
@@ -63,7 +63,7 @@ class AuthController extends Controller
             "status" => true,
             "message" => "Profile data",
             "data" => $userdata,
-        ]);
+        ], 200);
     }
 
 
@@ -72,18 +72,13 @@ class AuthController extends Controller
     {
         $token = JWTAuth::getToken();
 
-        // invalidate token
         $invalidate = JWTAuth::invalidate($token);
 
         if ($invalidate) {
             return response()->json([
-                'meta' => [
-                    'code' => 200,
-                    'status' => 'success',
-                    'message' => 'Successfully logged out',
-                ],
-                'data' => [],
-            ]);
+                'status' => 'success',
+                'message' => 'Successfully logged out',
+            ], 200);
         }
     }
 }
