@@ -17,7 +17,7 @@ Route::group([
 
 });
 
-Route::group(["prefix" => "/user"], function () {
+Route::group(["prefix" => "user"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::get("logout", [AuthController::class, "logout"]);
@@ -36,9 +36,9 @@ Route::group(["prefix" => "message"], function () {
 
 Route::group(["prefix" => "group"], function () {
     Route::group(["middleware" => "auth:api"], function () {
-
-        Route::post("group/create", [GroupController::class, "create"]);
-        Route::post("group/addUser", [GroupController::class, "addUser"]);
+        Route::post("create", [GroupController::class, "create"]);
+        Route::post("addUser", [GroupController::class, "addUser"]);
+        Route::post("addMessage", [GroupController::class, "addMessage"]);
     });
 });
 
