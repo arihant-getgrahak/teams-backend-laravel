@@ -78,5 +78,44 @@ class GroupController extends Controller
         ], 200);
     }
 
+    public function deleteGroup($group_id)
+    {
+        $group = Group::find($group_id);
+        if (!$group) {
+            return response()->json([
+                "status" => false,
+                "message" => "Group not found",
+            ], 500);
+        }
+        $group->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Group deleted successfully',
+        ], 200);
+    }
+
+    public function deleteMessage($group_id, $message_id)
+    {
+        $group = Group::find($group_id);
+        if (!$group) {
+            return response()->json([
+                "status" => false,
+                "message" => "Group not found",
+            ], 500);
+        }
+        $message = GroupMessage::find($message_id);
+        if (!$message) {
+            return response()->json([
+                "status" => false,
+                "message" => "Message not found",
+            ], 500);
+        }
+        $message->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Message deleted successfully',
+        ], 200);
+    }
+
 }
 
