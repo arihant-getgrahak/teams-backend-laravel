@@ -42,7 +42,7 @@ class GroupController extends Controller
     {
         DB::beginTransaction();
         try {
-            dd($request->all());
+            // dd($request->all());
             $data = GroupMessage::create($request->all());
             DB::commit();
             return response()->json([
@@ -58,11 +58,6 @@ class GroupController extends Controller
             ], 500);
         }
     }
-
-    // public function display($id)
-    // {
-    //     dd($id);
-    // }
 
     public function getGroupMessages($group_id)
     {
