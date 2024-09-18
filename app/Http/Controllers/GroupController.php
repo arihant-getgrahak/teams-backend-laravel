@@ -59,26 +59,30 @@ class GroupController extends Controller
         }
     }
 
-    public function display($id)
+    // public function display($id)
+    // {
+    //     dd($id);
+    // }
+
+    public function getGroupMessages($group_id)
     {
-        $checkIsGroupExist = Group::find($id);
-        if (!$checkIsGroupExist) {
+        $group = Group::find($group_id);
+        if (!$group)
+        {
             return response()->json([
-                "status" => false,
-                "message" => "Group not found"
+                "status"=> false,
+                "message" => "Group not found",
             ], 500);
         }
 
-        $message = GroupMessage::where("group_id", $id);
-        // if ($message->count() > 0) {
-        //     return response()->json([
-        //         "status" => true,
-        //         "data" => "Group found",
-        //         "message" => $message
-        //     ], 200);
-        // }
+        $message = GroupMessage::where("group_id", $group_id)
+            ->with('user:id,name')->paginate(20);
         return response()->json([
-            "message" => $message 
-        ]);
+            'status'=> true,
+            'message'=> 'Group message fetched successfully',
+            'data'=> $message,
+        ], 200);
+
     }
 }
+

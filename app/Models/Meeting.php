@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
-class Group extends Model
+class Meeting extends Model
 {
     use HasFactory;
     public static function boot()
@@ -22,20 +22,18 @@ class Group extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        "name"
+        'group_id',
+        'scheduled_at',
+        'title',
     ];
 
-    public function users()
+    public function group()
     {
-        return $this->belongsToMany(User::class, 'group_user')->withTimestamps();
+        return $this->belongsTo(Group::class);
     }
 
-    public function createdBy(){
-        return $this->belongsTo(User::class, "created_by");
-    }
-
-    public function meetings()
+    public function createdBy()
     {
-        return $this->hasMany(Meeting::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
