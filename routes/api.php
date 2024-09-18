@@ -40,6 +40,7 @@ Route::group(["prefix" => "group"], function () {
         Route::post("create", [GroupController::class, "create"]);
         Route::post("addUser", [GroupController::class, "addUser"]);
         Route::post("addMessage", [GroupController::class, "addMessage"]);
+        Route::get("/{group_id}/messages", [GroupController::class, "getGroupMessages"]);
     });
 });
 
