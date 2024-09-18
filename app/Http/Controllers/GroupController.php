@@ -40,8 +40,9 @@ class GroupController extends Controller
 
     public function addMessage(GroupChatRequest $request)
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
+            dd($request->all());
             $data = GroupMessage::create($request->all());
             DB::commit();
             return response()->json([
@@ -50,6 +51,7 @@ class GroupController extends Controller
                 "data" => $data
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 "status" => false,
                 "message" => $e->getMessage()
@@ -57,8 +59,26 @@ class GroupController extends Controller
         }
     }
 
-    // public function display($id)
-    // {
-    //     dd($id);
-    // }
+    public function display($id)
+    {
+        $checkIsGroupExist = Group::find($id);
+        if (!$checkIsGroupExist) {
+            return response()->json([
+                "status" => false,
+                "message" => "Group not found"
+            ], 500);
+        }
+
+        $message = GroupMessage::where("group_id", $id);
+        // if ($message->count() > 0) {
+        //     return response()->json([
+        //         "status" => true,
+        //         "data" => "Group found",
+        //         "message" => $message
+        //     ], 200);
+        // }
+        return response()->json([
+            "message" => $message 
+        ]);
+    }
 }
