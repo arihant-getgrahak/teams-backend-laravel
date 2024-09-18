@@ -176,7 +176,7 @@ Start the server
 
 ## Response Schema
 
-[POSTMAN](https://api.postman.com/collections/18412970-3a4378bf-eb64-4286-9236-dd636112328f?access_key=PMAT-01J7ZXA4R3NXET9FME64S8DD12)
+[POSTMAN](https://api.postman.com/collections/37798694-120193c7-c882-469e-9dd9-22fa46b2b250?access_key=PMAT-01J7ZSM2M82S3PZKY8PGDH413X)
 
 ## Tech Stack
 
