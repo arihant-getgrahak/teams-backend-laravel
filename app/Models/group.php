@@ -5,24 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
-
-class Message extends Model
+class group extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'sender_id',
         'receiver_id',
         'message',
         "isUpdate",
         "isDelete",
         "deletedAt",
-        "type"
+        "type",
+    ];
+
+    protected $casts = [
+        'receiver_id' => 'array', 
     ];
 
     public static function boot() {
         parent::boot();
-
+    
         static::creating(function ($model) {
             $model->id = Str::uuid();
         });
@@ -39,3 +42,4 @@ class Message extends Model
         return $this->belongsTo(User::class, "receiver_id");
     }
 }
+

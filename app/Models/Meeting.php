@@ -6,18 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
-class Message extends Model
+class Meeting extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
-        'sender_id',
-        'receiver_id',
-        'message',
-        "isUpdate",
-        "isDelete",
-        "deletedAt",
-        "type"
+    protected $fillable = [
+        "creator_id",
+        "scheduled",
+        "created_by",
     ];
 
     public static function boot() {
@@ -30,12 +26,9 @@ class Message extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function sender()
+    public function creator()
     {
-        return $this->belongsTo(User::class, "sender_id");
-    }
-    public function receiver()
-    {
-        return $this->belongsTo(User::class, "receiver_id");
+        return $this->belongsTo(User::class, "creator_id");
+
     }
 }
