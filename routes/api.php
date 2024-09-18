@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\MeetingController;
 
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
@@ -42,4 +43,8 @@ Route::group(["prefix" => "group"], function () {
     });
 });
 
-
+Route::group(["prefix"=> "meeting"], function () {
+    Route::group(["middleware"=> "auth:api"], function () {
+        Route::post("schedule", [MeetingController::class, "scheduleMeeting"]);
+    });
+});
