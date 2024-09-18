@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid("sender_id");
-            $table->uuid("receiver_id");
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
             $table->json("receiver_id")->nullable();
