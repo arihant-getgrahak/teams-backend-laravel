@@ -36,7 +36,8 @@ Route::group(["prefix" => "group"], function () {
         Route::post("create", [GroupController::class, "create"]);
         Route::post("addUser", [GroupController::class, "addUser"]);
         Route::post("addMessage", [GroupController::class, "addMessage"]);
-        Route::get("/{group_id}/messages", [GroupController::class, "getGroupMessages"]);
+        Route::put("update/message/{message_id}", [GroupController::class, "updateMessage"]);
+        Route::get("{group_id}/messages", [GroupController::class, "getGroupMessages"]);
         Route::delete("delete/{group_id}", [GroupController::class, "deleteGroup"]);
         Route::delete("delete/{group_id}/message/{message_id}", [GroupController::class, "deleteMessage"]);
     });

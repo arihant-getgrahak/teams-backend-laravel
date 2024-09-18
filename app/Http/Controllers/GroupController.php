@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GroupCreateRequest;
 use App\Http\Requests\GroupAddUserRequest;
 use App\Http\Requests\GroupChatRequest;
+use App\Http\Requests\GroupChatUpdateRequest;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use DB;
@@ -98,7 +99,6 @@ class GroupController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $group = Group::find($group_id);
             if (!$group) {
                 return response()->json([
@@ -113,7 +113,7 @@ class GroupController extends Controller
                     "message" => "Message not found",
                 ], 500);
             }
-            if($message->isDelete) {
+            if ($message->isDelete) {
                 return response()->json([
                     "status" => false,
                     "message" => "Message already deleted",
@@ -125,6 +125,51 @@ class GroupController extends Controller
                 'status' => true,
                 'message' => 'Message deleted successfully',
             ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateMessage(GroupChatUpdateRequest $request, $message_id)
+    {
+        DB::beginTransaction();
+        try {
+            $group = Group::find($request->group_id);
+            if (!$group) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Group not found",
+                ], 500);
+            }
+            $message = GroupMessage::find($message_id);
+            if (!$message) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message not found",
+                ], 500);
+            }
+
+            if ($message->isUpdate) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "You can update message once",
+                ], 500);
+            }
+
+            // update group chat message
+
+            $message->update(["message" => $request->message, "updatedAt" => now(), "isUpdate" => true]);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Message updated successfully',
+                'data' => $message
+            ], 200);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
