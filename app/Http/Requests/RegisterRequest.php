@@ -24,7 +24,8 @@ class RegisterRequest extends FormRequest
         return [
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required"
+            "password" => "required",
+            "designation"=>"required"
         ];
     }
 
@@ -36,6 +37,7 @@ class RegisterRequest extends FormRequest
             "email.email" => "The email must be a valid email address.",
             "password.required" => "The password field is required.",
             "name.required" => "The name field is required.",
+            "designation.required" => "The designation field is required.",
         ];
     }
 }
