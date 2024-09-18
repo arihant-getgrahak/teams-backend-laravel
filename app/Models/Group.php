@@ -15,19 +15,19 @@ class Group extends Model
 
         static::creating(function ($model) {
             $model->id = Str::uuid();
-            $model->created_by = auth()->user()->id;
         });
     }
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        "name"
+        "name",
+        "created_by",
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'group_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'group_user');
     }
 
     public function createdBy(){

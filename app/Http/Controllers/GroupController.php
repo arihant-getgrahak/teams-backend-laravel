@@ -8,15 +8,33 @@ use App\Http\Requests\GroupChatUpdateRequest;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use DB;
+use App\Transformers\GroupDisplayTransform;
 
 class GroupController extends Controller
 {
     public function create(GroupCreateRequest $request)
     {
-        $group = Group::create($request->all());
+        $data = [
+            "name" => $request->name,
+            "created_by" => auth()->user()->id,
+        ];
+        $group = Group::create($data);
         return response()->json([
             "message" => "Group created successfully",
             "data" => $group
+        ], 200);
+    }
+
+    public function displayGroup()
+    {
+        $group = Group::with(['createdBy:id,name', "users:id,name"])->get();
+        $group = [$group];
+        $response = fractal($group, new GroupDisplayTransform())->toArray();
+        return response()->json([
+            "status" => true,
+            "message" => "Group fetched successfully",
+            "data" => $response["data"][0]["data"]
+            // "Data" => $group
         ], 200);
     }
 
@@ -38,6 +56,23 @@ class GroupController extends Controller
             "data" => $group
         ], 200);
     }
+
+    public function deleteGroup($group_id)
+    {
+        $group = Group::find($group_id);
+        if (!$group) {
+            return response()->json([
+                "status" => false,
+                "message" => "Group not found",
+            ], 500);
+        }
+        $group->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Group deleted successfully',
+        ], 200);
+    }
+
 
     public function addMessage(GroupChatRequest $request)
     {
@@ -78,62 +113,6 @@ class GroupController extends Controller
             'data' => $message,
         ], 200);
     }
-
-    public function deleteGroup($group_id)
-    {
-        $group = Group::find($group_id);
-        if (!$group) {
-            return response()->json([
-                "status" => false,
-                "message" => "Group not found",
-            ], 500);
-        }
-        $group->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Group deleted successfully',
-        ], 200);
-    }
-
-    public function deleteMessage($group_id, $message_id)
-    {
-        DB::beginTransaction();
-        try {
-            $group = Group::find($group_id);
-            if (!$group) {
-                return response()->json([
-                    "status" => false,
-                    "message" => "Group not found",
-                ], 500);
-            }
-            $message = GroupMessage::find($message_id);
-            if (!$message) {
-                return response()->json([
-                    "status" => false,
-                    "message" => "Message not found",
-                ], 500);
-            }
-            if ($message->isDelete) {
-                return response()->json([
-                    "status" => false,
-                    "message" => "Message already deleted",
-                ], 500);
-            }
-            $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
-            DB::commit();
-            return response()->json([
-                'status' => true,
-                'message' => 'Message deleted successfully',
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                "status" => false,
-                "message" => $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function updateMessage(GroupChatUpdateRequest $request, $message_id)
     {
         DB::beginTransaction();
@@ -178,6 +157,43 @@ class GroupController extends Controller
             ], 500);
         }
     }
-
+    public function deleteMessage($group_id, $message_id)
+    {
+        DB::beginTransaction();
+        try {
+            $group = Group::find($group_id);
+            if (!$group) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Group not found",
+                ], 500);
+            }
+            $message = GroupMessage::find($message_id);
+            if (!$message) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message not found",
+                ], 500);
+            }
+            if ($message->isDelete) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message already deleted",
+                ], 500);
+            }
+            $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Message deleted successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
 }
 
