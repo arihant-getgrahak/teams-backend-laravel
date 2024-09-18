@@ -15,6 +15,7 @@ class Group extends Model
 
         static::creating(function ($model) {
             $model->id = Str::uuid();
+            $model->created_by = auth()->user()->id;
         });
     }
     protected $keyType = 'string';
@@ -23,4 +24,13 @@ class Group extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'group_user')->withTimestamps();
+    }
+
+    public function createdBy(){
+        return $this->belongsTo(User::class, "created_by");
+    }
 }

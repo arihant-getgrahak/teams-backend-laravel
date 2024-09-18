@@ -34,6 +34,12 @@ Route::group(["prefix" => "message"], function () {
     });
 });
 
-Route::post("group/create", [GroupController::class, "create"]);
-Route::post("group/addUser", [GroupController::class, "addUser"]);
+Route::group(["prefix" => "group"], function () {
+    Route::group(["middleware" => "auth:api"], function () {
+
+        Route::post("group/create", [GroupController::class, "create"]);
+        Route::post("group/addUser", [GroupController::class, "addUser"]);
+    });
+});
+
 
