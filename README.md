@@ -27,7 +27,7 @@ Postman collection [link](https://api.postman.com/collections/18412970-3a4378bf-
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `name`    | `string` | **Required**.                     |
+| `password`    | `string` | **Required**.                     |
 | `email`   | `string` | **Required**.                     |
 
 #### Get user profile
