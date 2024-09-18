@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->boolean("isUpdate")->default(false);
             $table->boolean('isDelete')->default(false);
             $table->dateTime("deletedAt")->nullable();
+            $table->enum('type', ['group']);
             $table->timestamps();
         });
     }
