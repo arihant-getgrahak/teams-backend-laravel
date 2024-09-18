@@ -38,24 +38,24 @@ class GroupController extends Controller
         ], 200);
     }
 
-    // public function addMessage(GroupChatRequest $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-    //         $data = GroupMessage::create($request->all());
-    //         DB::commit();
-    //         return response()->json([
-    //             "status" => true,
-    //             "message" => "Message sent successfully",
-    //             "data" => $data
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             "status" => false,
-    //             "message" => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+    public function addMessage(GroupChatRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = GroupMessage::create($request->all());
+            DB::commit();
+            return response()->json([
+                "status" => true,
+                "message" => "Message sent successfully",
+                "data" => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
 
     // public function display($id)
     // {
