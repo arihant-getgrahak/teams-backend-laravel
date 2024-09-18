@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\GroupController;
 
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
@@ -33,4 +33,7 @@ Route::group(["prefix" => "message"], function () {
         Route::delete("/delete", [MessageController::class, "delete"]);
     });
 });
+
+Route::post("group/create", [GroupController::class, "create"]);
+Route::post("group/addUser", [GroupController::class, "addUser"]);
 
