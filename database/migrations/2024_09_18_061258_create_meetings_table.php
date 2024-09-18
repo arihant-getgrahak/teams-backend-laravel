@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('meetings', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+            $table->dateTime('scheduled')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }
