@@ -19,6 +19,10 @@ class group extends Model
         "type",
     ];
 
+    protected $casts = [
+        'receiver_id' => 'array', 
+    ];
+
     public static function boot() {
         parent::boot();
     
