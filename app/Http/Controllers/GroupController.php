@@ -61,4 +61,26 @@ class GroupController extends Controller
     // {
     //     dd($id);
     // }
+
+    public function getGroupMessages($group_id)
+    {
+        $group = Group::find($group_id);
+        if (!$group)
+        {
+            return response()->json([
+                "status"=> false,
+                "message" => "Group not found",
+            ], 500);
+        }
+
+        $message = GroupMessage::where("group_id", $group_id)
+            ->with('user:id,name')->paginate(20);
+        return response()->json([
+            'status'=> true,
+            'message'=> 'Group message fetched successfully',
+            'data'=> $message,
+        ], 200);
+
+    }
 }
+
