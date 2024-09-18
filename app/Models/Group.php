@@ -33,4 +33,9 @@ class Group extends Model
     public function createdBy(){
         return $this->belongsTo(User::class, "created_by");
     }
+
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class);
+    }
 }
