@@ -23,7 +23,10 @@ class GroupMessage extends Model
     protected $fillable = [
         "group_id",
         "user_id",
-        "message"
+        "message",
+        "isUpdate",
+        "isDelete",
+        "deletedAt"
     ];
 
     public function group()

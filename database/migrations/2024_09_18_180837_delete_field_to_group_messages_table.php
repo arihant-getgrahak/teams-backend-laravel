@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table("group_messages", function (Blueprint $table) {
-            $table->foreignUuid('group_id')->constrained()->onDelete('cascade')->change();
-            $table->foreignUuid('user_id')->constrained()->onDelete('cascade')->change();
+        Schema::table('group_messages', function (Blueprint $table) {
+            $table->boolean("isUpdate")->default(false);
+            $table->boolean('isDelete')->default(false);
+            $table->dateTime("deletedAt")->nullable();
         });
     }
 
@@ -22,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('group_messages', function (Blueprint $table) {
+            //
+        });
     }
 };

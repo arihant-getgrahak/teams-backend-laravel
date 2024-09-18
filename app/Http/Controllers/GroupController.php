@@ -96,25 +96,42 @@ class GroupController extends Controller
 
     public function deleteMessage($group_id, $message_id)
     {
-        $group = Group::find($group_id);
-        if (!$group) {
+        DB::beginTransaction();
+        try {
+
+            $group = Group::find($group_id);
+            if (!$group) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Group not found",
+                ], 500);
+            }
+            $message = GroupMessage::find($message_id);
+            if (!$message) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message not found",
+                ], 500);
+            }
+            if($message->isDelete) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Message already deleted",
+                ], 500);
+            }
+            $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Message deleted successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 "status" => false,
-                "message" => "Group not found",
+                "message" => $e->getMessage()
             ], 500);
         }
-        $message = GroupMessage::find($message_id);
-        if (!$message) {
-            return response()->json([
-                "status" => false,
-                "message" => "Message not found",
-            ], 500);
-        }
-        $message->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Message deleted successfully',
-        ], 200);
     }
 
 }
