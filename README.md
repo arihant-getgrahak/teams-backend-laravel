@@ -137,8 +137,145 @@ Body
 | `message_id`     | `string`                | **Required**. |
 
 
+#### Create Group
+
+```http
+  POST  /api/group/create
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter        | Type                  | Description   |
+| :-------------   | :------------------   | :-------------|
+| `name`           | `string`                | **Required**. |
+
+#### Add users in group
+
+```http
+  POST  /api/group/addUser
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter        | Type                  | Description   |
+| :-------------   | :------------------   | :-------------|
+| `user_id`        | `string`              | **Required**. |
+| `group_id`       | `string`              | **Required**. |
+
+#### Add message in group
+
+```http
+  POST  /api/group/addMessage
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter        | Type                  | Description   |
+| :-------------   | :------------------   | :-------------|
+| `user_id`        | `string`              | **Required**. |
+| `group_id`       | `string`              | **Required**. |
+| `message`        | `string`              | **Required**. |
+
+#### display message in group
+
+```http
+  GET  /api/group/{group_id}/messages
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+#### Schedult meeting in group
+
+```http
+  POST  /api/meeting/schedule
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter        | Type                  | Description   |
+| :-------------   | :------------------   | :-------------|
+| `title`          | `string`              | **Required**. |
+| `group_id`       | `date`                | **Required**. |
+| `scheduled_at`   | `string`              | **Required**. |
+
+#### Create organization
+
+```http
+  POST  /api/organization/create
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter               | Type                  | Description   |
+| :---------------------  | :------------------   | :-------------|
+| `organization_name`     | `string`              | **Required**. |
+| `groups`                | `array`               | **Required**. |
+| `groups.*.group_name`   | `string`              | **Required**. |
+| `groups.*.users`        | `array`               | **Required**. |
+| `groups.*.users.*.name` | `string`              | **Required**. |
+| `groups.*.users.*.email`| `email`               | **Required**. |
 
 
+#### Update organization name
+
+```http
+  PUT  /api/organization/update/{id}
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+Body
+| Parameter               | Type                  | Description   |
+| :---------------------  | :------------------   | :-------------|
+| `organization_name`     | `string`              | **Required**. |
+
+#### Get organization
+
+```http
+  GET  /api/organization/search/{id}
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
+
+#### Delete organization
+
+```http
+  DELETE  /api/organization/delete/{id}
+```
+Headers
+| Parameter        | Type                  | Description   |
+| :--------        | :------------------   | :-------------|
+| `accept`         | `application/json`    | **Required**. |
+| `authorization`  | `Bearer` Token        | **Required**. |
 
 
 ## Run Locally
