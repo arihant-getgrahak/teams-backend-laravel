@@ -26,14 +26,24 @@ class InviteRequest extends FormRequest
     {
         return [
             "email" => "required|email|exists:users",
+            "invitedTo" => "required|exists:users,id",
+            "invitedBy" => "required|exists:users,id",
+            // "organization_id" => "required|exists:organizations,id"
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
             "email.exists" => "The email does not exist",
             "email.required" => "The email field is required.",
             "email.email" => "Please enter valid email address",
+            "invitedTo.required" => "The invitedTo field is required.",
+            "invitedBy.required" => "The invitedBy field is required.",
+            "invitedBy.exists" => "The invitedBy does not exist",
+            "invitedTo.exists" => "The invitedTo does not exist",
+            // "organization_id.required" => "The organization_id field is required.",
+            // "organization_id.exists" => "The organization_id does not exist",
         ];
     }
 }

@@ -146,7 +146,7 @@ return [
 
     'required_claims' => [
         'iat',
-        'exp',
+        // 'exp',
         'jti',
     ],
 

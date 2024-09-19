@@ -56,3 +56,6 @@ Route::group(["prefix"=> "invite"], function () {
         Route::post("create", [InviteController::class, "createToken"]);
     });
 });
+
+
+// Route::get("/delete",[InviteController::class,"dropTable"]);

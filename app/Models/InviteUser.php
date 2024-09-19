@@ -24,5 +24,18 @@ class InviteUser extends Model
         'email',
         'token',
         'expires_at',
+        "organization_id",
+        "invitedTo",
+        "invitedBy"
     ];
+
+    public function invitedBy()
+    {
+        return $this->belongsTo(User::class, "invitedBy");
+    }
+
+    public function invitedTo()
+    {
+        return $this->belongsTo(User::class, "invitedTo");
+    }
 }
