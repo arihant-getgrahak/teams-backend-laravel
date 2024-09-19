@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GroupMessage extends Model
+class InviteUser extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     public static function boot()
     {
         parent::boot();
@@ -22,20 +21,21 @@ class GroupMessage extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        "group_id",
-        "user_id",
-        "message",
-        "isUpdate",
-        "isDelete",
-        "deletedAt"
+        'email',
+        'token',
+        'expires_at',
+        "organization_id",
+        "invitedTo",
+        "invitedBy"
     ];
-    public function group()
+
+    public function invitedBy()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(User::class, "invitedBy");
     }
 
-    public function user()
+    public function invitedTo()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "invitedTo");
     }
 }
