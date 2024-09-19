@@ -54,7 +54,7 @@ Route::group(["prefix"=> "meeting"], function () {
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::post("create", [OrganizationController::class, "create"]);
-        Route::put("update", [OrganizationController::class,"updateOrganization"]);
+        Route::put("update/{id}", [OrganizationController::class,"updateOrganization"]);
         Route::delete("delete/{id}", [OrganizationController::class, "deleteOrganization"]);  
         Route::get("/search/{id}", [OrganizationController::class, "getOrganization"]);  
     });
