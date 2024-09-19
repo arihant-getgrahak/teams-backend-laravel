@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InviteRequest;
 use App\Models\InviteUser;
 use App\Models\User;
+use Hash;
 use Http;
 use Str;
 
@@ -13,18 +14,22 @@ class InviteController extends Controller
     protected string $url = "http://teams-backend-laravel.test";
     public function createToken(InviteRequest $request)
     {
+        // InviteUser::truncate();
+        // dd();
         $data = [
-            "token" => Str::random(20),
+            "token" => Hash::make(Str::random(20)),
             "expires_at" => now()->addMinutes(10),
             "email" => $request->email,
             "invitedBy" => $request->invitedBy,
             "organization_id" => "jkvjkbk",
             "invitedTo" => $request->invitedTo
         ];
-        $invite = InviteUser::create($data);
-        $user = User::where("email", $invite->email)->first();
-        $invited_to_name = User::where("id", $invite->invitedTo)->first();
-        $invited_by_name = User::where("id", $invite->invitedBy)->first();
+
+        $invite = InviteUser::updateOrCreate($data);
+
+       
+        $user = User::where("email", $request->email)->first();
+        $invited_to_name = User::where("id", $request->invitedTo)->first();
 
         if (!$user) {
             return response()->json([
@@ -40,20 +45,19 @@ class InviteController extends Controller
             ], 400);
         }
 
-        // check who send to who??
         $sendData = [];
         // $checkInvitedByisLegit = 
 
         if ($request->invitedBy === auth()->user()->id) {
             $sendData = [
-                "body" => "<p>You are invited to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/verify/$invite->token>Click Here</a></p>",
+                "body" => "<p>You are invited to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/$request->invitedTo/verify/$invite->token>Click Here</a></p>",
                 "subject" => "You are invited in organization Arihant",
                 "email" => $request->email
             ];
         } else {
             $sendData = [
-                "body" => "<p>$invited_to_name->name is requesting to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/verify/$invite->token>Click Here</a></p>",
-                "subject" => "You are invited in organization Arihant",
+                "body" => "<p>$invited_to_name->name is requesting to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/$request->invitedTo/verify/$invite->token>Click Here</a></p>",
+                "subject" => "$invited_to_name->name is requesting to join organization Arihant",
                 "email" => $request->email
             ];
         }
@@ -63,9 +67,10 @@ class InviteController extends Controller
         return response()->json([
             "status" => true,
             "message" => "Invite sent successfully"
-        ],200);
+        ], 200);
     }
 }
+
 
 // thing add to forgot 
 // -> who send to who
