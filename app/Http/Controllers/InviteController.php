@@ -8,6 +8,7 @@ use App\Models\User;
 use Hash;
 use Http;
 use Str;
+use URL;
 
 class InviteController extends Controller
 {
@@ -25,9 +26,15 @@ class InviteController extends Controller
             "invitedTo" => $request->invitedTo
         ];
 
-        $invite = InviteUser::updateOrCreate($data);
+        // $invite = InviteUser::updateOrCreate($data);
+        $invite = InviteUser::where("email", $request->email)->first();
+        if ($invite) {
+            $invite->update($data);
+        } else {
+            $invite = InviteUser::create($data);
+        }
 
-       
+
         $user = User::where("email", $request->email)->first();
         $invited_to_name = User::where("id", $request->invitedTo)->first();
 
@@ -47,16 +54,17 @@ class InviteController extends Controller
 
         $sendData = [];
         // $checkInvitedByisLegit = 
+        $urlencodeToken = urlencode($invite->token);
 
         if ($request->invitedBy === auth()->user()->id) {
             $sendData = [
-                "body" => "<p>You are invited to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/$request->invitedTo/verify/$invite->token>Click Here</a></p>",
+                "body" => "<p>You are invited to join organization Arihant. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
                 "subject" => "You are invited in organization Arihant",
                 "email" => $request->email
             ];
         } else {
             $sendData = [
-                "body" => "<p>$invited_to_name->name is requesting to join organization Arihant. Click the following link to accept invite. <a href=$this->url/invite/$request->invitedTo/verify/$invite->token>Click Here</a></p>",
+                "body" => "<p>$invited_to_name->name is requesting to join organization Arihant. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
                 "subject" => "$invited_to_name->name is requesting to join organization Arihant",
                 "email" => $request->email
             ];
@@ -68,6 +76,30 @@ class InviteController extends Controller
             "status" => true,
             "message" => "Invite sent successfully"
         ], 200);
+    }
+
+    public function verifyToken($userId, $token)
+    {
+        $isUserValid = InviteUser::where("invitedTo", $userId)->first();
+        if (!$isUserValid) {
+            return response()->json([
+                "status" => false,
+                "message" => "Invalid Token or Expired"
+            ], 500);
+        }
+
+        if (! urlencode($token) == $isUserValid->token) {
+            return response()->json([
+                "status" => false,
+                "message" => "Invalid Token or Expired"
+            ], 500);
+        }
+
+        $isUserValid->delete();
+        return response()->json([
+            "status" => true,
+            "message" => "Invite verified successfully",
+        ]);
     }
 }
 
