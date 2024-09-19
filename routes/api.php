@@ -6,6 +6,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\InviteController;
 
 Route::group(["prefix" => "auth"], function () {
@@ -51,6 +52,15 @@ Route::group(["prefix" => "meeting"], function () {
     });
 });
 
+Route::group(["prefix" => "organization"], function () {
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::post("create", [OrganizationController::class, "create"]);
+        Route::put("update", [OrganizationController::class,"updateOrganization"]);
+        Route::delete("delete/{id}", [OrganizationController::class, "deleteOrganization"]);  
+        Route::get("/search/{id}", [OrganizationController::class, "getOrganization"]);  
+    });
+});
+
 Route::group(["prefix" => "invite"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::post("create", [InviteController::class, "createToken"]);
@@ -62,3 +72,4 @@ Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyTo
 
 
 // Route::get("/delete",[InviteController::class,"dropTable"]);
+
