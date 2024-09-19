@@ -75,4 +75,40 @@ class OrganizationController extends Controller
             ], 500);
         }
     }
+
+    public function deleteOrganization($id)
+    {
+        DB::beginTransaction();
+        try {
+            $organization = Organization::find($id);
+            if (!$organization) {
+                return response()->json([   
+                    "status" => false,
+                    "message" => "Organization not found",
+                ], 500);
+            }
+
+            if ($organization->isDelete) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Organization already deleted",
+                ], 500);
+            }
+            
+            $organization->update(["isDelete" => true, "deletedAt" => now()]);
+            $organization->forceDelete();
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Organization deleted successfully',
+            ], 200);
+        } 
+        catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
 }
