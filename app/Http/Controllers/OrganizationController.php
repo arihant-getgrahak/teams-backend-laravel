@@ -111,4 +111,20 @@ class OrganizationController extends Controller
             ], 500);
         }
     }
+
+    public function getOrganization($id)
+    {
+        $organization = Organization::find($id);
+        if (!$organization) {
+            return response()->json([
+                "status" => false,
+                "message" => "Organization not found",
+            ], 500);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Organization found successfully',
+            'data' => $organization
+        ], 200);
+    }
 }
