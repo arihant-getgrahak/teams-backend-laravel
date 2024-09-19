@@ -42,9 +42,6 @@ class OrganizationUpdateRequest extends FormRequest
             'description.required' => 'The description field is required.',
             'description.max' => 'The description may not be greater than 255 characters.',
             'description.string' => 'The description must be a string.',
-
-            'group_id.required' => 'The group id field is required.',
-            'group_id.exists' => 'The group id does not exist.',
         ];
     }
 }
