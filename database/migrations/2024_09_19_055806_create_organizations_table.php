@@ -13,11 +13,8 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('organization_name');
             $table->foreignUuid('created_by');
-            $table->foreignId('group_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
