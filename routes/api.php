@@ -6,6 +6,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\InviteController;
 
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
@@ -47,5 +48,11 @@ Route::group(["prefix" => "group"], function () {
 Route::group(["prefix"=> "meeting"], function () {
     Route::group(["middleware"=> "auth:api"], function () {
         Route::post("schedule", [MeetingController::class, "scheduleMeeting"]);
+    });
+});
+
+Route::group(["prefix"=> "invite"], function () {
+    Route::group(["middleware"=> "auth:api"], function () {
+        Route::post("create", [InviteController::class, "createToken"]);
     });
 });
