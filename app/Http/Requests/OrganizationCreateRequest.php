@@ -25,25 +25,24 @@ class OrganizationCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_name' => 'required|string|max:255',
-            'groups' => 'required|array',
-            'groups.*.group_name' => 'required|string|max:255',
-            'groups.*.users' => 'required|array',
-            'groups.*.users.*.name' => 'required|string|max:255',
-            'groups.*.users.*.email' => 'required|email|max:255|unique:users,email',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'group_id' => 'required|exists:groups,id',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'organization_name.required' => 'The organization name is required.',
-            'groups.required' => 'You must provide at least one group.',
-            'groups.*.group_name.required' => 'Each group must have a name.',
-            'groups.*.users.required' => 'Each group must have at least one user.',
-            'groups.*.users.*.name.required' => 'The user name is required.',
-            'groups.*.users.*.email.required' => 'The user email is required.',
-            'groups.*.users.*.email.unique' => 'The email has already been taken.',
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'name.string' => 'The name must be a string.',
+            'description.required' => 'The description field is required.',
+            'description.max' => 'The description may not be greater than 255 characters.',
+            'description.string' => 'The description must be a string.',
+            'group_id.exists' => 'The group does not exist.',
+            'group_id.required' => 'The group field is required.',
         ];
     }
 }
