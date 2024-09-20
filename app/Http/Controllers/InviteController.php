@@ -26,15 +26,21 @@ class InviteController extends Controller
             "invitedTo" => $request->invitedTo
         ];
 
-        // $invite = InviteUser::updateOrCreate($data);
+        // $isOrganizationValid = Organization::find($request->organization_id)->exists();
+        // if (!$isOrganizationValid) {
+        //     return response()->json([
+        //         "status" => false,
+        //         "message" => "Organization not found"
+        //     ]);
+        // }
+
         $invite = InviteUser::where("email", $request->email)->first();
         if ($invite) {
             $invite->update($data);
         } else {
             $invite = InviteUser::create($data);
         }
-
-
+        
         $user = User::where("email", $request->email)->first();
         $invited_to_name = User::where("id", $request->invitedTo)->first();
 
@@ -53,7 +59,13 @@ class InviteController extends Controller
         }
 
         $sendData = [];
-        // $checkInvitedByisLegit = 
+        // $checkInvitedByisLegit = Organization::where("created_by",$request->invitedBy)->exists();
+        // if (!$checkInvitedByisLegit) {
+        //     return response()->json([
+        //         "status" => false,
+        //         "message" => "You have to be admin to invite others."
+        //     ]);
+        // }
         $urlencodeToken = urlencode($invite->token);
 
         if ($request->invitedBy === auth()->user()->id) {
@@ -88,7 +100,7 @@ class InviteController extends Controller
             ], 500);
         }
 
-        if (! urlencode($token) == $isUserValid->token) {
+        if (!urlencode($token) === $isUserValid->token) {
             return response()->json([
                 "status" => false,
                 "message" => "Invalid Token or Expired"
