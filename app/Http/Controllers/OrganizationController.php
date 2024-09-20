@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrganizationCreateRequest;
 use App\Models\Organization;
 use App\Http\Requests\OrganizationUpdateRequest;
-use App\Models\organization_groups;
-use App\Models\organization_user;
+use App\Models\Group;
 use DB;
 
 class OrganizationController extends Controller
@@ -14,42 +13,18 @@ class OrganizationController extends Controller
     public function create(OrganizationCreateRequest $request)
     {
         $data = [
-            "organization_name" => $request->organization_name,
+            "name" => $request->name,
+            "description" => $request->description,
             "created_by" => auth()->user()->id,
+            "group_id" => $request->group_id,
+            "user_id" => $request->user_id,
         ];
-        // DB::beginTransaction();
-        // try {
         $organization = Organization::create($data);
         return response()->json([
             "message" => "Organization created successfully",
             "data" => $organization
         ], 200);
-
-        foreach ($request->group as $groupData) {
-            // Create each group and associate it with the organization
-            $group = Group::create([
-                'group_name' => $groupData['group_name'],
-                'organization_id' => $organizations->id,
-            ]);
-        
-            foreach ($groupData['users'] as $userData) {
-                User::create([
-                    'name' => $userData['name'],
-                    'email' => $userData['email'],
-                    'group_id' => $group->id,
-            ]);
-            }
-        }
-
-        DB::commit();
-        return response()->json([
-            'message' => 'Organization, groups, and users created successfully',
-            'data' => $organization,
-        ], 200);
-
-    
     }
-    
 
     public function updateOrganization(OrganizationUpdateRequest $request)
     {
@@ -62,33 +37,34 @@ class OrganizationController extends Controller
                     "message" => "Organization not found",
                 ], 500);
             }
-            $organization = Organization::find($request->id);
-            if (!$organization) {
+            $name = Organization::find($request->id);
+            if (!$name) {
                 return response()->json([
                     "status" => false,
                     "message" => "name not found",
                 ], 500);
             }
 
-            if ($organization->isUpdate) {
+            if ($name->isUpdate) {
                 return response()->json([
                     "status" => false,
                     "message" => "You can update name once",
-                ], 409);
+                ], 500);
             }
 
             // update name of organization
 
-            $organization->update([
-                "organization_name" => $request->organization_name,
-                "updated_at" => now(),
-                "isUpdate" => true,
+            $name->update([
+                "name" => $request->name, 
+                "description" => $request->description,
+                "updatedAt" => now(), 
+                "isUpdate" => true
             ]);
             DB::commit();
             return response()->json([
                 'status' => true,
                 'message' => 'Name updated successfully',
-                'data' => $organization,
+                'data' => $name,
             ], 200);
 
         } catch (\Exception $e) {
@@ -106,7 +82,7 @@ class OrganizationController extends Controller
         try {
             $organization = Organization::find($id);
             if (!$organization) {
-                return response()->json([
+                return response()->json([   
                     "status" => false,
                     "message" => "Organization not found",
                 ], 500);
@@ -118,7 +94,7 @@ class OrganizationController extends Controller
                     "message" => "Organization already deleted",
                 ], 500);
             }
-
+            
             $organization->update(["isDelete" => true, "deletedAt" => now()]);
             $organization->forceDelete();
             DB::commit();
@@ -126,7 +102,8 @@ class OrganizationController extends Controller
                 'status' => true,
                 'message' => 'Organization deleted successfully',
             ], 200);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 "status" => false,
