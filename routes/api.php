@@ -6,7 +6,9 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\InviteController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OrganizationGroupMessageController;
+use App\Http\Controllers\OrganizationTwoPersonChatController;
 
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
@@ -48,6 +50,36 @@ Route::group(["prefix" => "group"], function () {
 Route::group(["prefix" => "meeting"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::post("schedule", [MeetingController::class, "scheduleMeeting"]);
+    });
+});
+
+Route::group(["prefix" => "organization"], function () {
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::post('/organizations', [OrganizationController::class, 'store']);
+        Route::post('/organizations/{organizationId}/users', [OrganizationController::class, 'addUser']);
+        Route::post('/organizations/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
+
+        Route::post('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
+        Route::get('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
+
+        Route::post('/organizations/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
+        Route::get('/organizations/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
+
+    });
+});
+
+Route::group(["prefix" => "organization"], function () {
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::post('/organizations', [OrganizationController::class, 'store']);
+        Route::post('/organizations/{organizationId}/users', [OrganizationController::class, 'addUser']);
+        Route::post('/organizations/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
+
+        Route::post('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
+        Route::get('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
+
+        Route::post('/organizations/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
+        Route::get('/organizations/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
+
     });
 });
 

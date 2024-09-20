@@ -27,7 +27,7 @@ Postman collection [link](https://api.postman.com/collections/18412970-3a4378bf-
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `name`    | `string` | **Required**.                     |
+| `password`    | `string` | **Required**.                     |
 | `email`   | `string` | **Required**.                     |
 
 #### Get user profile
@@ -89,7 +89,7 @@ Body
 | Parameter       | Type               | Description          |
 | :-------------- | :----------------  | :------------------- |
 | `message`       | `string`           | **Required**.        |
-| `receiver_id`   | `id`               | **Required**.        |
+| `receiver_id`   | `string`               | **Required**.        |
 | `type`          | `enum individual,group` | **Required**.        |
 
 #### Display message
@@ -117,7 +117,7 @@ Headers
 Body
 | Parameter        | Type                  | Description   |
 | :--------        | :------------------   | :-------------|
-| `message_id`     | `{id}`                | **Required**. |
+| `message_id`     | `string`                | **Required**. |
 | `message`        | `message`             | **Required**. |
 
 #### Get message delete
@@ -134,7 +134,7 @@ Headers
 Body
 | Parameter        | Type                  | Description   |
 | :-------------   | :------------------   | :-------------|
-| `message_id`     | `{id}`                | **Required**. |
+| `message_id`     | `string`                | **Required**. |
 
 
 
