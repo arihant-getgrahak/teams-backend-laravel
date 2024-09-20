@@ -17,7 +17,7 @@ class InviteController extends Controller
         // InviteUser::truncate();
         // dd();
         $data = [
-            "token" => Hash::make(Str::random(20)),
+            "token" => Str::random(20),
             "expires_at" => now()->addMinutes(10),
             "email" => $request->email,
             "invitedBy" => $request->invitedBy,
@@ -25,7 +25,15 @@ class InviteController extends Controller
             "invitedTo" => $request->invitedTo
         ];
 
-        $isOrganizationValid = Organization::where("id", $request->organization_id);
+        if ($request->invitedBy === $request->invitedTo) {
+            return response()->json([
+                "status" => false,
+                "message" => "you cannot invite yourself"
+            ], 500);
+        }
+
+        $isOrganizationValid = Organization::findOrFail($request->organization_id);
+
         if (!$isOrganizationValid) {
             return response()->json([
                 "status" => false,
@@ -34,6 +42,7 @@ class InviteController extends Controller
         }
 
         $checkInvitedByisLegit = Organization::where("created_by", $request->invitedBy)->exists();
+
         if (!$checkInvitedByisLegit) {
             return response()->json([
                 "status" => false,
@@ -42,6 +51,7 @@ class InviteController extends Controller
         }
 
         $invite = InviteUser::where("email", $request->email)->first();
+
         if ($invite) {
             $invite->update($data);
         } else {
@@ -49,7 +59,9 @@ class InviteController extends Controller
         }
 
         $user = User::where("email", $request->email)->first();
+
         $invited_to_name = User::where("id", $request->invitedTo)->first();
+
 
         if (!$user) {
             return response()->json([
@@ -58,7 +70,8 @@ class InviteController extends Controller
             ], 404);
         }
 
-        if (auth()->user()->id == $user->id) {
+
+        if (auth()->user()->id === $user->id) {
             return response()->json([
                 "status" => false,
                 "message" => "You can't invite yourself"
@@ -68,16 +81,20 @@ class InviteController extends Controller
         $sendData = [];
         $urlencodeToken = urlencode($invite->token);
 
+        $orgName = $isOrganizationValid->name;
+
+
+
         if ($request->invitedBy === auth()->user()->id) {
             $sendData = [
-                "body" => "<p>You are invited to join organization Arihant. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
-                "subject" => "You are invited in organization Arihant",
+                "body" => "<p>You are invited to join organization $orgName. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
+                "subject" => "You are invited in organization $orgName",
                 "email" => $request->email
             ];
         } else {
             $sendData = [
-                "body" => "<p>$invited_to_name->name is requesting to join organization Arihant. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
-                "subject" => "$invited_to_name->name is requesting to join organization Arihant",
+                "body" => "<p>$invited_to_name->name is requesting to join organization $orgName. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
+                "subject" => "$invited_to_name->name is requesting to join organization $orgName",
                 "email" => $request->email
             ];
         }
@@ -92,27 +109,49 @@ class InviteController extends Controller
 
     public function verifyToken($userId, $token)
     {
-        $isUserValid = InviteUser::where("invitedTo", $userId)->first();
-        if (!$isUserValid) {
+        $invite = InviteUser::where('invitedTo', $userId)
+            ->where('token', $token)
+            ->first();
+
+        if (!$invite) {
             return response()->json([
-                "status" => false,
-                "message" => "Invalid Token or Expired"
+                'status' => false,
+                'message' => 'Invalid Token or Expired'
             ], 500);
         }
 
-        if (!urlencode($token) === $isUserValid->token) {
+        if ($invite->expires_at < now()) {
             return response()->json([
-                "status" => false,
-                "message" => "Invalid Token or Expired"
+                'status' => false,
+                'message' => 'Token Expired'
             ], 500);
         }
 
-        $isUserValid->delete();
+        $organization = Organization::where('id', $invite->organization_id)->first();
+        if (!$organization) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Organization not found'
+            ], 404);
+        }
+
+        $userExists = $organization->users->contains('id', $userId);
+        if ($userExists) {
+            return response()->json([
+                'message' => 'User already exists in the organization'
+            ], 409);
+        }
+
+        $organization->users()->attach($userId);
+
+        $invite->delete();
+
         return response()->json([
-            "status" => true,
-            "message" => "Invite verified successfully",
+            'status' => true,
+            'message' => 'Invite verified successfully',
         ]);
     }
+
 }
 
 

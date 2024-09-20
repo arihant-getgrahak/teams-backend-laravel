@@ -72,14 +72,14 @@ Route::group(["prefix" => "organization"], function () {
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::post('/create', [OrganizationController::class, 'store']);
-        Route::post('/organizations/{organizationId}/users', [OrganizationController::class, 'addUser']);
-        Route::post('/organizations/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
+        Route::post('/{organizationId}/users', [OrganizationController::class, 'addUser']);
+        Route::post('/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
 
-        Route::post('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
-        Route::get('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
+        Route::post('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
+        Route::get('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
 
-        Route::post('/organizations/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
-        Route::get('/organizations/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
+        Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
+        Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
 
     });
 });
@@ -91,7 +91,5 @@ Route::group(["prefix" => "invite"], function () {
 });
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
-// http://teams-backend-laravel.test/api/invite/ef51ded6-40e5-4740-b02f-5c57fbd52cf4/verify/$2y$12$kJqu5DkxjhJnPNv3afZRfOfL1ooAvpmCNSjy7FDCr/PoeGtpjMzhq
-
 
 // Route::get("/delete",[InviteController::class,"dropTable"]);

@@ -12,25 +12,12 @@ class OrganizationController extends Controller
     public function store(StoreOrganizationRequest $request)
     {
         $data = [
-            "name"=> $request->name,
+            "name" => $request->name,
             "description" => $request->description ?? "",
             "created_by" => auth()->user()->id
         ];
         $organization = Organization::create($data);
         return response()->json($organization);
-    }
-
-    public function addUser(AddUserToOrganizationRequest $request, $organizationId)
-    {
-        $organization = Organization::findOrFail($organizationId);
-        $user = User::findOrFail($request->user_id);
-
-        if ($organization->users()->where('user_id', $user->id)->exists()) {
-            return response()->json(['message' => 'User already exists in the organization'], 409);
-        }
-
-        $organization->users()->attach($user);
-        return response()->json('User added to organization');
     }
 
     public function createGroup(CreateGroupRequest $request, $organizationId)
