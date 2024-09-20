@@ -8,7 +8,7 @@ use App\Models\User;
 use Hash;
 use Http;
 use Str;
-use URL;
+use App\Models\Organization;
 
 class InviteController extends Controller
 {
@@ -26,13 +26,13 @@ class InviteController extends Controller
             "invitedTo" => $request->invitedTo
         ];
 
-        // $isOrganizationValid = Organization::find($request->organization_id)->exists();
-        // if (!$isOrganizationValid) {
-        //     return response()->json([
-        //         "status" => false,
-        //         "message" => "Organization not found"
-        //     ]);
-        // }
+        $isOrganizationValid = Organization::find($request->organization_id)->exists();
+        if (!$isOrganizationValid) {
+            return response()->json([
+                "status" => false,
+                "message" => "Organization not found"
+            ]);
+        }
 
         $invite = InviteUser::where("email", $request->email)->first();
         if ($invite) {
@@ -59,13 +59,14 @@ class InviteController extends Controller
         }
 
         $sendData = [];
-        // $checkInvitedByisLegit = Organization::where("created_by",$request->invitedBy)->exists();
-        // if (!$checkInvitedByisLegit) {
-        //     return response()->json([
-        //         "status" => false,
-        //         "message" => "You have to be admin to invite others."
-        //     ]);
-        // }
+        $checkInvitedByisLegit = Organization::where("created_by",$request->invitedBy)->exists();
+        if (!$checkInvitedByisLegit) {
+            return response()->json([
+                "status" => false,
+                "message" => "You have to be admin to invite others."
+            ]);
+        }
+        
         $urlencodeToken = urlencode($invite->token);
 
         if ($request->invitedBy === auth()->user()->id) {

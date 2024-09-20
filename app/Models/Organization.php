@@ -22,6 +22,7 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'description',
+        "created_by"
     ];
 
     public function users()
@@ -32,5 +33,10 @@ class Organization extends Model
     public function groups()
     {
         return $this->hasMany(OrganizationGroup::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, "created_by");
     }
 }
