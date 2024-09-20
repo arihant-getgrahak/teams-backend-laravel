@@ -21,25 +21,19 @@ class Organization extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        "name",
+        "organization_name",
         "created_by",
-        "description",
-        "group_id",
-        "user_id",
     ];
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'organizations');
-    }
+
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, "created_by");
     }
 
-    public function group()
+    public function groups()
     {
-        return $this->belongsTo(Group::class);
+        return $this->hasMany(Group::class);
     }
 
 }

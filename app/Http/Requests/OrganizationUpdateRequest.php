@@ -25,23 +25,14 @@ class OrganizationUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|max:255",
-            "description" => "required|string|max:255",
-            // "group_id" => "required|exists:groups,id",
-            // "user_id" => "required|exists:users,id",
+            'organization_name' => 'sometimes|required|string|max:255',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.max' => 'The name may not be greater than 255 characters.',
-            'name.string' => 'The name must be a string.',
-
-            'description.required' => 'The description field is required.',
-            'description.max' => 'The description may not be greater than 255 characters.',
-            'description.string' => 'The description must be a string.',
+            'organization_name.required' => 'The organization name is required.',
         ];
     }
 }
