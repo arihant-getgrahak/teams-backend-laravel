@@ -9,7 +9,6 @@ use Hash;
 use Http;
 use Str;
 use App\Models\Organization;
-
 class InviteController extends Controller
 {
     protected string $url = "http://teams-backend-laravel.test";
@@ -22,15 +21,23 @@ class InviteController extends Controller
             "expires_at" => now()->addMinutes(10),
             "email" => $request->email,
             "invitedBy" => $request->invitedBy,
-            "organization_id" => "jkvjkbk",
+            "organization_id" => $request->organization_id,
             "invitedTo" => $request->invitedTo
         ];
 
-        $isOrganizationValid = Organization::find($request->organization_id)->exists();
+        $isOrganizationValid = Organization::where("id", $request->organization_id);
         if (!$isOrganizationValid) {
             return response()->json([
                 "status" => false,
                 "message" => "Organization not found"
+            ]);
+        }
+
+        $checkInvitedByisLegit = Organization::where("created_by", $request->invitedBy)->exists();
+        if (!$checkInvitedByisLegit) {
+            return response()->json([
+                "status" => false,
+                "message" => "You have to be admin to invite others."
             ]);
         }
 
@@ -40,7 +47,7 @@ class InviteController extends Controller
         } else {
             $invite = InviteUser::create($data);
         }
-        
+
         $user = User::where("email", $request->email)->first();
         $invited_to_name = User::where("id", $request->invitedTo)->first();
 
@@ -59,14 +66,6 @@ class InviteController extends Controller
         }
 
         $sendData = [];
-        $checkInvitedByisLegit = Organization::where("created_by",$request->invitedBy)->exists();
-        if (!$checkInvitedByisLegit) {
-            return response()->json([
-                "status" => false,
-                "message" => "You have to be admin to invite others."
-            ]);
-        }
-        
         $urlencodeToken = urlencode($invite->token);
 
         if ($request->invitedBy === auth()->user()->id) {

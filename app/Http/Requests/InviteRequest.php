@@ -28,7 +28,7 @@ class InviteRequest extends FormRequest
             "email" => "required|email|exists:users",
             "invitedTo" => "required|exists:users,id",
             "invitedBy" => "required|exists:users,id",
-            // "organization_id" => "required|exists:organizations,id"
+            "organization_id" => "required|exists:organizations,id"
         ];
     }
 
@@ -42,8 +42,8 @@ class InviteRequest extends FormRequest
             "invitedBy.required" => "The invitedBy field is required.",
             "invitedBy.exists" => "The invitedBy does not exist",
             "invitedTo.exists" => "The invitedTo does not exist",
-            // "organization_id.required" => "The organization_id field is required.",
-            // "organization_id.exists" => "The organization_id does not exist",
+            "organization_id.required" => "The organization_id field is required.",
+            "organization_id.exists" => "The organization_id does not exist",
         ];
     }
 }

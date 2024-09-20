@@ -71,7 +71,7 @@ Route::group(["prefix" => "organization"], function () {
 
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
-        Route::post('/organizations', [OrganizationController::class, 'store']);
+        Route::post('/create', [OrganizationController::class, 'store']);
         Route::post('/organizations/{organizationId}/users', [OrganizationController::class, 'addUser']);
         Route::post('/organizations/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
 

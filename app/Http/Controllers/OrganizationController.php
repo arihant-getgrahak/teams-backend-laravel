@@ -11,7 +11,12 @@ class OrganizationController extends Controller
 {
     public function store(StoreOrganizationRequest $request)
     {
-        $organization = Organization::create($request->all());
+        $data = [
+            "name"=> $request->name,
+            "description" => $request->description ?? "",
+            "created_by" => auth()->user()->id
+        ];
+        $organization = Organization::create($data);
         return response()->json($organization);
     }
 
