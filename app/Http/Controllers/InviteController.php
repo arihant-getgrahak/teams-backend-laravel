@@ -100,7 +100,8 @@ class InviteController extends Controller
             ];
         }
 
-        Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
+        // Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
+        Http::post("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZkMDYzMjA0M2M1MjY4NTUzZDUxMzQi_pc", $sendData);
 
         return response()->json([
             "status" => true,
@@ -110,6 +111,7 @@ class InviteController extends Controller
 
     public function verifyToken($userId, $token)
     {
+
         $invite = InviteUser::where('invitedTo', $userId)
             ->where('token', $token)
             ->first();
@@ -151,9 +153,15 @@ class InviteController extends Controller
             "email" => $invite->email
         ];
 
-        Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
+        view("invite")->with("user", [
+            "name" => $invite->name,
+            "organization_name" => $organization->name
+        ]);
 
-        $invite->delete();
+        // Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
+        Http::post("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZkMDYzMjA0M2M1MjY4NTUzZDUxMzQi_pc", $sendData);
+
+        // $invite->delete();
 
         return response()->json([
             'status' => true,
