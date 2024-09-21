@@ -99,7 +99,7 @@ class InviteController extends Controller
             ];
         }
 
-        Http::post("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZkMDYzMjA0M2M1MjY4NTUzZDUxMzQi_pc", $sendData);
+        Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
 
         return response()->json([
             "status" => true,
@@ -143,6 +143,14 @@ class InviteController extends Controller
         }
 
         $organization->users()->attach($userId);
+
+        $sendData = [
+            "body" => "<p>You are now the member of organization $organization->name</p>",
+            "subject" => "Invite verified successfully",
+            "email" => $invite->email
+        ];
+
+        Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
 
         $invite->delete();
 
