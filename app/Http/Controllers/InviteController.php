@@ -16,10 +16,11 @@ class InviteController extends Controller
     {
         // InviteUser::truncate();
         // dd();
+        $email = User::find($request->invitedTo)->email;
         $data = [
             "token" => Str::random(20),
             "expires_at" => now()->addMinutes(10),
-            "email" => $request->email,
+            "email" => $email,
             "invitedBy" => $request->invitedBy,
             "organization_id" => $request->organization_id,
             "invitedTo" => $request->invitedTo
@@ -50,7 +51,7 @@ class InviteController extends Controller
             ]);
         }
 
-        $invite = InviteUser::where("email", $request->email)->first();
+        $invite = InviteUser::where("email", $email)->first();
 
         if ($invite) {
             $invite->update($data);
@@ -58,7 +59,7 @@ class InviteController extends Controller
             $invite = InviteUser::create($data);
         }
 
-        $user = User::where("email", $request->email)->first();
+        $user = User::where("email", $email)->first();
 
         $invited_to_name = User::where("id", $request->invitedTo)->first();
 
@@ -89,13 +90,13 @@ class InviteController extends Controller
             $sendData = [
                 "body" => "<p>You are invited to join organization $orgName. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
                 "subject" => "You are invited in organization $orgName",
-                "email" => $request->email
+                "email" => $email
             ];
         } else {
             $sendData = [
                 "body" => "<p>$invited_to_name->name is requesting to join organization $orgName. Click the following link to accept invite. <a href=$this->url/api/invite/$request->invitedTo/verify/$urlencodeToken>Click Here</a></p>",
                 "subject" => "$invited_to_name->name is requesting to join organization $orgName",
-                "email" => $request->email
+                "email" => $email
             ];
         }
 

@@ -25,7 +25,6 @@ class InviteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "email" => "required|email|exists:users",
             "invitedTo" => "required|exists:users,id",
             "invitedBy" => "required|exists:users,id",
             "organization_id" => "required|exists:organizations,id"
@@ -35,9 +34,6 @@ class InviteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "email.exists" => "The email does not exist",
-            "email.required" => "The email field is required.",
-            "email.email" => "Please enter valid email address",
             "invitedTo.required" => "The invitedTo field is required.",
             "invitedBy.required" => "The invitedBy field is required.",
             "invitedBy.exists" => "The invitedBy does not exist",
