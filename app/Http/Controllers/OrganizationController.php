@@ -54,11 +54,25 @@ class OrganizationController extends Controller
             ], 409);
         }
 
+        $userExists = $isGroupExist->users->contains('id', $request->user_id);
+        if ($userExists) {
+            return response()->json([
+                'message' => 'User already added to group',
+            ], 409);
+        }
+        $userExists = $isGroupExist->users->contains('id', $request->second_user_id);
+        if ($userExists) {
+            return response()->json([
+                'message' => 'Second User already added to group',
+            ], 409);
+        }
         $isGroupExist->users()->attach($request->user_id);
+        $isGroupExist->users()->attach($request->second_user_id);
+
         return response()->json([
             "status" => true,
             "message" => "User added to group successfully",
-            "data" => $isGroupExist
+            "data" => $isGroupExist->users
         ], 200);
     }
 }

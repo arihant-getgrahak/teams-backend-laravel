@@ -27,6 +27,7 @@ class addUserGroupRequest extends FormRequest
         return [
             "organization_id" => "required|exists:organizations,id",
             'user_id' => 'required|exists:users,id',
+            'second_user_id' => 'required|exists:users,id',
             'group_id' => 'required|exists:organization_groups,id'
         ];
     }
@@ -35,6 +36,8 @@ class addUserGroupRequest extends FormRequest
         return [
             'user_id.required' => 'The user id field is required.',
             'user_id.exists' => 'The user id does not exist.',
+            'second_user_id.required' => 'The user id field is required.',
+            'second_user_id.exists' => 'The user id does not exist.',
             'group_id.required' => 'The group id field is required.',
             'group_id.exists' => 'The group id does not exist.',
         ];
