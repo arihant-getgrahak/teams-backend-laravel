@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: digitalocean.com/php
+    image: teams-app
     container_name: app
     restart: unless-stopped
     tty: true
@@ -48,6 +48,8 @@ services:
     volumes:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - /etc/ssl/key.pem:/etc/ssl/key.pem
+      - /etc/ssl/cert.pem:/etc/ssl/cert.pem
     networks:
       - app-network
 
