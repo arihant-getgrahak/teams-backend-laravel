@@ -54,20 +54,20 @@ Route::group(["prefix" => "meeting"], function () {
     });
 });
 
-Route::group(["prefix" => "organization"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
-        Route::post('/organizations', [OrganizationController::class, 'store']);
-        Route::post('/organizations/{organizationId}/users', [OrganizationController::class, 'addUser']);
-        Route::post('/organizations/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
+// Route::group(["prefix" => "organization"], function () {
+//     Route::group(["middleware" => "auth:api"], function () {
+//         Route::post('/create', [OrganizationController::class, 'store']);
+//         Route::post('/{organizationId}/users', [OrganizationController::class, 'addUser']);
+//         Route::post('/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
 
-        Route::post('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
-        Route::get('/organization_groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
+//         Route::post('/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
+//         Route::get('/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
 
-        Route::post('/organizations/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
-        Route::get('/organizations/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
+//         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
+//         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
 
-    });
-});
+//     });
+// });
 
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
