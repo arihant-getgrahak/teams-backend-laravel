@@ -11,6 +11,13 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
 
+Route::get("/",function(){
+    return response()->json([
+        "status"=>"up",
+        "date"=>now()
+    ],200);
+});
+
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
     Route::post("login", [AuthController::class, "login"]);
@@ -54,20 +61,6 @@ Route::group(["prefix" => "meeting"], function () {
     });
 });
 
-// Route::group(["prefix" => "organization"], function () {
-//     Route::group(["middleware" => "auth:api"], function () {
-//         Route::post('/create', [OrganizationController::class, 'store']);
-//         Route::post('/{organizationId}/users', [OrganizationController::class, 'addUser']);
-//         Route::post('/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
-
-//         Route::post('/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
-//         Route::get('/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
-
-//         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
-//         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
-
-//     });
-// });
 
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
