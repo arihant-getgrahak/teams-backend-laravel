@@ -16,6 +16,9 @@ class InviteController extends Controller
     {
         // InviteUser::truncate();
         // dd();
+        // $organization = Organization::where('id', "d215ce53-b0d1-4e0e-8c91-76c328f8f913")->first();
+        // $organization->users()->truncate();
+        // dd();
         $email = User::find($request->invitedTo)->email;
         $data = [
             "token" => Str::random(20),
@@ -141,7 +144,7 @@ class InviteController extends Controller
         $userExists = $organization->users->contains('id', $userId);
         if ($userExists) {
             return response()->json([
-                'message' => 'User already exists in the organization'
+                'message' => 'Token Expired',
             ], 409);
         }
 
@@ -153,25 +156,17 @@ class InviteController extends Controller
             "email" => $invite->email
         ];
 
-        view("invite")->with("user", [
-            "name" => $invite->name,
-            "organization_name" => $organization->name
-        ]);
-
         // Http::post("https://eoyq811oxfe9r0u.m.pipedream.net", $sendData);
         Http::post("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZkMDYzMjA0M2M1MjY4NTUzZDUxMzQi_pc", $sendData);
 
-        // $invite->delete();
+        $name = $invite->name;
+        $orgName = $organization->name;
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Invite verified successfully',
+        $invite->delete();
+
+        return view("invite")->with("user", [
+            "name" => $name,
+            "organization_name" => $orgName
         ]);
     }
-
 }
-
-
-// thing add to forgot 
-// -> who send to who
-// -> organization id
