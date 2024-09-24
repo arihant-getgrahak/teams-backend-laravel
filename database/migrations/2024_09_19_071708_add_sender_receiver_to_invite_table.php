@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('organizations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->foreignUuid("created_by");
-            $table->timestamps();
+        Schema::table('invite_users', function (Blueprint $table) {
+            $table->foreignUuid("invitedBy");
+            $table->foreignUuid("invitedTo");
+            $table->foreignUuid("organization_id");
         });
     }
 
@@ -25,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('organizations');
+        Schema::table('invite', function (Blueprint $table) {
+            //
+        });
     }
 };

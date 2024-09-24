@@ -34,6 +34,6 @@ class OrganizationGroup extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'organization_group_user');
+        return $this->belongsToMany(User::class, 'organization_group_users');
     }
 }

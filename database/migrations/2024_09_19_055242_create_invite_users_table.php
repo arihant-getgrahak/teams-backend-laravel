@@ -10,9 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('group_user', function (Blueprint $table) {
-            $table->foreignUuid('group_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+        Schema::create('invite_users', function (Blueprint $table) {
+            $table->uuid("id")->primary();
+            $table->string("email");
+            $table->string("token", 20)->unique();
+            $table->dateTime("expires_at");
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_user');
+        Schema::dropIfExists('invite_users');
     }
 };

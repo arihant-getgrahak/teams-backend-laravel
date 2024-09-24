@@ -38,3 +38,54 @@ services:
       - MYSQL_DATABASE=teams_db
       - MYSQL_USER=teams_user
       - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD: 'password01'
+      - MYSQL_USER: 'arihant'
+      - MYSQL_PASS: 'password01'
+    volumes:
+      - './:/var/www'
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+    depends_on:
+      - app
+      - db
+
+  App:
+    image: app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    Image: teams-app
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      dockerfile: DockerFile
+    volumes:
+      - ./.:/var/www
+    working_dir: /var/www
+    depends_on:
+      - db
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - /etc/ssl/key.pem:/etc/ssl/key.pem
+      - /etc/ssl/cert.pem:/etc/ssl/cert.pem
+    networks:
+      - app-network
+
+
+Networks:
+  app-network:
+    driver: bridge
+
