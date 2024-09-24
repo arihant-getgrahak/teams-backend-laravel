@@ -8,11 +8,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OrganizationController;
-
-use App\Http\Controllers\InviteController;
-
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
+use App\Http\Middleware\SetLocale;
+use App\Http\Controllers\LanguageController;
+use App\Http\Middleware\SetUserLocale;
 
 Route::get("/",function(){
     return response()->json([
@@ -25,7 +25,7 @@ Route::get("/",function(){
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
     Route::post("login", [AuthController::class, "login"]);
-});
+})->middleware(SetUserLocale::class);
 
 
 Route::group(["prefix" => "user"], function () {
@@ -72,7 +72,8 @@ Route::group(["prefix" => "organization"], function () {
         Route::put("update", [OrganizationController::class,"updateOrganization"]);
         Route::delete("delete/{id}", [OrganizationController::class, "deleteOrganization"]);  
         Route::get("/search/{id}", [OrganizationController::class, "getOrganization"]);  
-
+    });
+});
 
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
@@ -100,4 +101,12 @@ Route::group(["prefix" => "invite"], function () {
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
 // Route::get("/delete",[InviteController::class,"dropTable"]);
+
+
+Route::group(["prefix" => "language"], function () {
+    Route::group(["middleware" => SetLocale::class], function () {
+        Route::post('/setlanguage', [AuthController::class, 'login']);
+        Route::post('/set', [LanguageController::class, 'setLanguage']);
+    });
+});
 
