@@ -7,9 +7,6 @@ use App\Http\Requests\StoreOrganizationRequest;
 use App\Models\User;
 use App\Models\Organization;
 
-use Illuminate\Support\Facades\Http;
-
-
 class OrganizationController extends Controller
 {
     public function store(StoreOrganizationRequest $request)
