@@ -11,7 +11,7 @@ class CreateGroupRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -25,14 +25,14 @@ class CreateGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required'=> 'name is required',
+            'name.required' => __('validation.required', ['attribute' => 'नाम']),
         ];
     }
 }
