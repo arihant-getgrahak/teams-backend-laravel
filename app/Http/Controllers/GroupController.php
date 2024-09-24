@@ -20,7 +20,7 @@ class GroupController extends Controller
         ];
         $group = Group::create($data);
         return response()->json([
-            "message" => "Group created successfully",
+            "message" => __('auth.created', ['attribute' => 'Group']),
             "data" => $group
         ], 200);
     }
@@ -32,7 +32,7 @@ class GroupController extends Controller
         $response = fractal($group, new GroupDisplayTransform())->toArray();
         return response()->json([
             "status" => true,
-            "message" => "Group fetched successfully",
+            "message" => __("auth.fetched", ["attribute"=> "Group"]),
             "data" => $response["data"][0]["data"]
             // "Data" => $group
         ], 200);
@@ -45,14 +45,14 @@ class GroupController extends Controller
 
         if ($group->users()->find($request->user_id)) {
             return response()->json([
-                "message" => "User already added to group",
+                "message" => __('auth.added', ['attribute'=> 'User']),
                 "status" => false
             ], 500);
         }
         $group->users()->attach($request->user_id);
         return response()->json([
             "status" => true,
-            "message" => "User added to group successfully",
+            "message" => __('auth.add', ['attribute'=> 'User']),
             "data" => $group
         ], 200);
     }
@@ -63,13 +63,13 @@ class GroupController extends Controller
         if (!$group) {
             return response()->json([
                 "status" => false,
-                "message" => "Group not found",
+                "message" => __('auth.notfound', ['attribute'=> 'Group']),
             ], 500);
         }
         $group->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Group deleted successfully',
+            'message' => __('auth.deleted', ['attribute'=> 'Group']),
         ], 200);
     }
 
@@ -83,7 +83,7 @@ class GroupController extends Controller
             DB::commit();
             return response()->json([
                 "status" => true,
-                "message" => "Message sent successfully",
+                "message" => __('auth.sent', ['attribute'=> 'Message']),
                 "data" => $data
             ]);
         } catch (\Exception $e) {
@@ -101,7 +101,7 @@ class GroupController extends Controller
         if (!$group) {
             return response()->json([
                 "status" => false,
-                "message" => "Group not found",
+                "message" => __('auth.notfound', ['attribute'=> 'Group']),
             ], 500);
         }
 
@@ -109,7 +109,7 @@ class GroupController extends Controller
             ->with('user:id,name')->paginate(20);
         return response()->json([
             'status' => true,
-            'message' => 'Group message fetched successfully',
+            'message' => __('auth.fetched', ['attribute'=> 'GroupMessage']),
             'data' => $message,
         ], 200);
     }
@@ -121,21 +121,21 @@ class GroupController extends Controller
             if (!$group) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Group not found",
+                    "message" => __('auth.notfound', ['attribute'=> 'Group']),
                 ], 500);
             }
             $message = GroupMessage::find($message_id);
             if (!$message) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Message not found",
+                    "message" => __('auth.notfound', ['attribute'=> 'Message']),
                 ], 500);
             }
 
             if ($message->isUpdate) {
                 return response()->json([
                     "status" => false,
-                    "message" => "You can update message once",
+                    "message" => __('auth.once'),
                 ], 500);
             }
 
@@ -145,7 +145,7 @@ class GroupController extends Controller
             DB::commit();
             return response()->json([
                 'status' => true,
-                'message' => 'Message updated successfully',
+                'message' => __('auth.updated', ['attribute'=> 'Message']),
                 'data' => $message
             ], 200);
 
@@ -165,27 +165,27 @@ class GroupController extends Controller
             if (!$group) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Group not found",
+                    "message" => __("auth.notfound", ["attribute"=> "Group"]),
                 ], 500);
             }
             $message = GroupMessage::find($message_id);
             if (!$message) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Message not found",
+                    "message" => __("auth.notfound", ["attribute"=> "Message"]),
                 ], 500);
             }
             if ($message->isDelete) {
                 return response()->json([
                     "status" => false,
-                    "message" => "Message already deleted",
+                    "message" => __('auth.alreadydeleted', ['attribute'=> 'Message']),
                 ], 500);
             }
             $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
             DB::commit();
             return response()->json([
                 'status' => true,
-                'message' => 'Message deleted successfully',
+                'message' => __('auth.deleted', ['attribute'=> 'Message']),
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
