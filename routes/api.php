@@ -1,13 +1,26 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OrganizationController;
+
 use App\Http\Controllers\InviteController;
+
+use App\Http\Controllers\OrganizationGroupMessageController;
+use App\Http\Controllers\OrganizationTwoPersonChatController;
+
+Route::get("/",function(){
+    return response()->json([
+        "status"=>"up",
+        "date"=>now()
+    ],200);
+});
+
 
 Route::group(["prefix" => "auth"], function () {
     Route::post("register", [AuthController::class, "register"]);
@@ -52,12 +65,29 @@ Route::group(["prefix" => "meeting"], function () {
     });
 });
 
+
 Route::group(["prefix" => "organization"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::post("create", [OrganizationController::class, "create"]);
         Route::put("update", [OrganizationController::class,"updateOrganization"]);
         Route::delete("delete/{id}", [OrganizationController::class, "deleteOrganization"]);  
         Route::get("/search/{id}", [OrganizationController::class, "getOrganization"]);  
+
+
+Route::group(["prefix" => "organization"], function () {
+    Route::group(["middleware" => "auth:api"], function () {
+        Route::post('/create', [OrganizationController::class, 'store']);
+        Route::post('/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
+
+        Route::post('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
+        Route::get('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
+
+        Route::post("/group/addUser",[OrganizationController::class, 'addGroupUser']);
+
+        Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
+        Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
+
+
     });
 });
 
@@ -68,8 +98,6 @@ Route::group(["prefix" => "invite"], function () {
 });
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
-// http://teams-backend-laravel.test/api/invite/ef51ded6-40e5-4740-b02f-5c57fbd52cf4/verify/$2y$12$kJqu5DkxjhJnPNv3afZRfOfL1ooAvpmCNSjy7FDCr/PoeGtpjMzhq
-
 
 // Route::get("/delete",[InviteController::class,"dropTable"]);
 
