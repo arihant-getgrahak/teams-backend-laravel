@@ -11,7 +11,7 @@ class MessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -31,16 +31,17 @@ class MessageRequest extends FormRequest
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
-            'receiver_id.exists' => 'The user you are trying to send a message to does not exist',
-            'receiver_id.required' => 'The user you are trying to send a message to is required',
-            'receiver_id.string' => 'The user you are trying to send a message to must be a string',
-            'message.required' => 'The message you are trying to send is required',
-            'message.max' => 'The message you are trying to send is too long',
-            'message.string' => 'The message you are trying to send must be a string',
-            'type.in'=> 'The type you are trying to send is not valid',
-            "type.required"=>"The type you are trying to send is required"
+            'receiver_id.exists' => __('validation.required', ["attribute" => "उपयोगकर्ता"]),
+            'receiver_id.required' => __('validation.required', ["attribute" => "उपयोगकर्ता"]),
+            'receiver_id.string' => __('validation.string', ["attribute" => "उपयोगकर्ता"]),
+            'message.required' => __('validation.required', ["attribute" => "संदेश"]),
+            'message.max' => __('validation.max', ["attribute" => "संदेश", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "संदेश"]),
+            'type.in' => __('validation.in', ["attribute" => "प्रकार"]),
+            "type.required" => __('validation.required', ["attribute" => "प्रकार"]),
         ];
     }
 }
