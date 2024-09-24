@@ -37,10 +37,7 @@ return [
     //         "organization_id.required" => "संगठन_आईडी फ़ील्ड आवश्यक है|",
     //         "organization_id.exists" => "संगठन_आईडी मौजूद नहीं है|",
     //     ],
-    // 'login' =>
-    //     [
-    //         'required' => ':attribute फ़ील्ड आवश्यक है|',
-    //     ],
+    
     // 'meeting' =>
     //     [
     //         'scheduled_at.required' => 'निर्धारित समय आवश्यक है|',
@@ -68,15 +65,6 @@ return [
     //         'description.string' => 'विवरण एक स्ट्रिंग होना चाहिए|',
     //     ],
 
-    // 'registration' =>
-    //     [
-    //         "email.unique" => "ईमेल पहले ही ली जा चुकी है।|",
-    //         "email.required" => "ईमेल क्षेत्र की आवश्यकता है।|",
-    //         "email.email" => "ईमेल एक वैध ईमेल पता होना चाहिए.|",
-    //         "password.required" => "पासवर्ड फ़ील्ड आवश्यक है|",
-    //         "name.required" => "नाम का फील्ड आवश्यक है।",
-    //         "designation.required" => "पदनाम फ़ील्ड आवश्यक है|",
-    //     ],
     "required" => ':attribute फ़ील्ड आवश्यक है|',
     "unique" => ":attribute पहले ही ली जा चुकी है|",
     "email" => ":attribute एक वैध ईमेल पता होना चाहिए|",

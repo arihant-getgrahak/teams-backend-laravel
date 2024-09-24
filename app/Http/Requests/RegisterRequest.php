@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required",
+            "password" => "required|min:8",
             "designation" => "required"
         ];
     }
@@ -38,6 +38,7 @@ class RegisterRequest extends FormRequest
             "designation.required" => __("validation.required", ["attribute" => "पद का नाम"]),
             "email.required" => __("validation.required", ["attribute" => "ईमेल"]),
             "password.required" => __("validation.required", ["attribute" => "पासवर्ड"]),
+            "password.min" => __("validation.min", ["attribute" => "पासवर्ड", "min" => "8"]),
         ];
     }
 }
