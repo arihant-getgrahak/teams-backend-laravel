@@ -32,13 +32,13 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "email.unique" => __("validation.unique", ["attribute" => "ईमेल"]),
-            "email.email" => __("validation.email", ["attribute" => "ईमेल"]),
-            "name.required" => __("validation.required", ["attribute" => "नाम"]),
-            "designation.required" => __("validation.required", ["attribute" => "पद का नाम"]),
-            "email.required" => __("validation.required", ["attribute" => "ईमेल"]),
-            "password.required" => __("validation.required", ["attribute" => "पासवर्ड"]),
-            "password.min" => __("validation.min", ["attribute" => "पासवर्ड", "min" => "8"]),
+            "email.unique" => __("validation.unique", ["attribute" => "email"]),
+            "email.email" => __("validation.email", ["attribute" => "email"]),
+            "name.required" => __("validation.required", ["attribute" => "name"]),
+            "designation.required" => __("validation.required", ["attribute" => "designation"]),
+            "email.required" => __("validation.required", ["attribute" => "email"]),
+            "password.required" => __("validation.required", ["attribute" => "password"]),
+            "password.min" => __("validation.min", ["attribute" => "password", "min" => "8"]),
         ];
     }
 }

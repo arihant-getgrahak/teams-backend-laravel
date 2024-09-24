@@ -33,10 +33,10 @@ class GroupAddUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => __("validation.required", ["attribute" => "उपयोगकर्ता आईडी"]),
-            'user_id.exists' => __("validation.exists", ["attribute" => "उपयोगकर्ता आईडी"]),
-            'group_id.required' => __("validation.required", ["attribute" => "समूह आईडी"]),
-            'group_id.exists' => __("validation.exists", ["attribute" => "समूह आईडी"]),
+            'user_id.required' => __("validation.required", ["attribute" => "user_id"]),
+            'user_id.exists' => __("validation.exists", ["attribute" => "user_id"]),
+            'group_id.required' => __("validation.required", ["attribute" => "group_id"]),
+            'group_id.exists' => __("validation.exists", ["attribute" => "group_id"]),
         ];
     }
 }

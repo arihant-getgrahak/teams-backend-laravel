@@ -68,9 +68,9 @@ class MessageDeleteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'message_id.exists' => __("validation.exists", ["attribute" => "संदेश"]),
-            'message_id.required' => __('validation.required', ["attribute" => "संदेश"]),
-            'message_id.string' => __('validation.string', ["attribute" => "संदेश"]),
+            'message_id.exists' => __("validation.exists", ["attribute" => "message"]),
+            'message_id.required' => __('validation.required', ["attribute" => "message"]),
+            'message_id.string' => __('validation.string', ["attribute" => "message"]),
         ];
     }
 }

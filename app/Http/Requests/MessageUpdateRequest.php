@@ -65,11 +65,11 @@ class MessageUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'message.required' => __('validation.required', ["attribute" => "संदेश"]),
-            'message.max' => __('validation.max', ["attribute" => "संदेश", "max" => 255]),
-            'message.string' => __('validation.string', ["attribute" => "संदेश"]),
-            'message_id.exists' => __("validation.exists", ["attribute" => "संदेश"]),
-            'message_id.required' => __('validation.required', ["attribute" => "संदेश"]),
+            'message.required' => __('validation.required', ["attribute" => "message"]),
+            'message.max' => __('validation.max', ["attribute" => "message", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "message"]),
+            'message_id.exists' => __("validation.exists", ["attribute" => "message"]),
+            'message_id.required' => __('validation.required', ["attribute" => "message"]),
         ];
     }
 }

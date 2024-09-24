@@ -34,11 +34,11 @@ class MeetingRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'group_id.required' => __("validation.required", ["attribute" => "समूह"]),
-            'group_id.exists' => __('validation.exists', ['attribute' => 'समूह']),
-            'scheduled_at.required' => __('validation.required', ['attribute' => 'समय']),
-            'agenda.required' => __('validation.required', ['attribute' => 'अध्ययन']),
-            'agenda.max' => __('validation.max', ['attribute' => 'अध्ययन', 'max' => 255]),
+            'group_id.required' => __("validation.required", ["attribute" => "group"]),
+            'group_id.exists' => __('validation.exists', ['attribute' => 'group']),
+            'scheduled_at.required' => __('validation.required', ['attribute' => 'time']),
+            'agenda.required' => __('validation.required', ['attribute' => 'agenda']),
+            'agenda.max' => __('validation.max', ['attribute' => 'agenda', 'max' => 255]),
         ];
     }
 }

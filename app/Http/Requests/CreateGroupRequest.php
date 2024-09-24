@@ -32,7 +32,7 @@ class CreateGroupRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('validation.required', ['attribute' => 'नाम']),
+            'name.required' => __('validation.required', ['attribute' => 'name']),
         ];
     }
 }

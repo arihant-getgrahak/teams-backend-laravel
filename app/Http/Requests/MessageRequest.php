@@ -34,14 +34,14 @@ class MessageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'receiver_id.exists' => __('validation.required', ["attribute" => "उपयोगकर्ता"]),
-            'receiver_id.required' => __('validation.required', ["attribute" => "उपयोगकर्ता"]),
-            'receiver_id.string' => __('validation.string', ["attribute" => "उपयोगकर्ता"]),
-            'message.required' => __('validation.required', ["attribute" => "संदेश"]),
-            'message.max' => __('validation.max', ["attribute" => "संदेश", "max" => 255]),
-            'message.string' => __('validation.string', ["attribute" => "संदेश"]),
-            'type.in' => __('validation.in', ["attribute" => "प्रकार"]),
-            "type.required" => __('validation.required', ["attribute" => "प्रकार"]),
+            'receiver_id.exists' => __('validation.required', ["attribute" => "user_id"]),
+            'receiver_id.required' => __('validation.required', ["attribute" => "user_id"]),
+            'receiver_id.string' => __('validation.string', ["attribute" => "user_id"]),
+            'message.required' => __('validation.required', ["attribute" => "message"]),
+            'message.max' => __('validation.max', ["attribute" => "message", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "message"]),
+            'type.in' => __('validation.in', ["attribute" => "type"]),
+            "type.required" => __('validation.required', ["attribute" => "type"]),
         ];
     }
 }

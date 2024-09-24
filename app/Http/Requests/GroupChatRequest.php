@@ -34,12 +34,12 @@ class GroupChatRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "message.required" => __("validation.required", ["attribute" => "संदेश"]),
-            "message.max" => __("validation.max", ["attribute" => "संदेश", "max" => 255]),
-            "group_id.required" => __("validation.required", ["attribute" => "समूह"]),
-            "group_id.exists" => __("validation.exists", ["attribute" => "समूह"]),
-            "user_id.required" => __("validation.required", ["attribute" => "उपयोगकर्ता"]),
-            "user_id.exists" => __("validation.exists", ["attribute" => "उपयोगकर्ता"]),
+            "message.required" => __("validation.required", ["attribute" => "message"]),
+            "message.max" => __("validation.max", ["attribute" => "message", "max" => 255]),
+            "group_id.required" => __("validation.required", ["attribute" => "group"]),
+            "group_id.exists" => __("validation.exists", ["attribute" => "group"]),
+            "user_id.required" => __("validation.required", ["attribute" => "user_id"]),
+            "user_id.exists" => __("validation.exists", ["attribute" => "user_id"]),
         ];
     }
 }

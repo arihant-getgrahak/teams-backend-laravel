@@ -38,7 +38,7 @@ class InviteRequest extends FormRequest
             "invitedBy.required" => __("validation.required", ["attribute" => "invitedBy"]),
             "invitedBy.exists" => __("validation.exists", ["attribute" => "invitedBy"]),
             "invitedTo.exists" => __("validation.exists", ["attribute" => "invitedTo"]),
-            "organization_id.required" => __("validation.required", ["attribute" => "संगठन_आईडी"]),
+            "organization_id.required" => __("validation.required", ["attribute" => "organization_id"]),
             "organization_id.exists" => "The organization_id does not exist",
         ];
     }
