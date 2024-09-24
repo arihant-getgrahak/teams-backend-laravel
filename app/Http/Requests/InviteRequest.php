@@ -34,11 +34,11 @@ class InviteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "invitedTo.required" => "The invitedTo field is required.",
-            "invitedBy.required" => "The invitedBy field is required.",
-            "invitedBy.exists" => "The invitedBy does not exist",
-            "invitedTo.exists" => "The invitedTo does not exist",
-            "organization_id.required" => "The organization_id field is required.",
+            "invitedTo.required" => __("validation.required", ["attribute" => "invitedTo"]),
+            "invitedBy.required" => __("validation.required", ["attribute" => "invitedBy"]),
+            "invitedBy.exists" => __("validation.exists", ["attribute" => "invitedBy"]),
+            "invitedTo.exists" => __("validation.exists", ["attribute" => "invitedTo"]),
+            "organization_id.required" => __("validation.required", ["attribute" => "organization_id"]),
             "organization_id.exists" => "The organization_id does not exist",
         ];
     }

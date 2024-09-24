@@ -31,14 +31,15 @@ class GroupChatRequest extends FormRequest
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
-            "message.required" => "Message is required",
-            "message.max" => "Message must be less than 255 characters",
-            "group_id.required" => "Group id is required",
-            "group_id.exists" => "Group id does not exist",
-            "user_id.required" => "User id is required",
-            "user_id.exists" => "User id does not exist"
+            "message.required" => __("validation.required", ["attribute" => "message"]),
+            "message.max" => __("validation.max", ["attribute" => "message", "max" => 255]),
+            "group_id.required" => __("validation.required", ["attribute" => "group"]),
+            "group_id.exists" => __("validation.exists", ["attribute" => "group"]),
+            "user_id.required" => __("validation.required", ["attribute" => "user_id"]),
+            "user_id.exists" => __("validation.exists", ["attribute" => "user_id"]),
         ];
     }
 }

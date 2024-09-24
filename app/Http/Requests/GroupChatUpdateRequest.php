@@ -11,7 +11,7 @@ class GroupChatUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(!auth()->check()) {
+        if (!auth()->check()) {
             return false;
         }
         return true;
@@ -30,12 +30,13 @@ class GroupChatUpdateRequest extends FormRequest
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
-            'message.required' => 'The message field is required.',
-            'message.max' => 'The message is too long.',
-            'group_id.required' => 'The group id field is required.',
-            'group_id.exists' => 'The group id does not exist.',
+            "message.required" => __("validation.required", ["attribute" => "message"]),
+            "message.max" => __("validation.max", ["attribute" => "message", "max" => 255]),
+            "group_id.required" => __("validation.required", ["attribute" => "group"]),
+            "group_id.exists" => __("validation.exists", ["attribute" => "group"]),
         ];
     }
 }

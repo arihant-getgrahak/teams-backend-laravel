@@ -11,7 +11,7 @@ class GroupAddUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(!auth()->check()) {
+        if (!auth()->check()) {
             return false;
         }
         return true;
@@ -30,12 +30,13 @@ class GroupAddUserRequest extends FormRequest
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
-            'user_id.required' => 'The user id field is required.',
-            'user_id.exists' => 'The user id does not exist.',
-            'group_id.required' => 'The group id field is required.',
-            'group_id.exists' => 'The group id does not exist.',
+            'user_id.required' => __("validation.required", ["attribute" => "user_id"]),
+            'user_id.exists' => __("validation.exists", ["attribute" => "user_id"]),
+            'group_id.required' => __("validation.required", ["attribute" => "group_id"]),
+            'group_id.exists' => __("validation.exists", ["attribute" => "group_id"]),
         ];
     }
 }

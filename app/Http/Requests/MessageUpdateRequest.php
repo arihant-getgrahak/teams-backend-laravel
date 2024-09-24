@@ -15,22 +15,23 @@ class MessageUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         if (!auth()->check()) {
+            $this->error = __("validation.login");
             return false;
         }
         $message_id = $this->message_id;
         $user_id = auth()->user()->id;
 
         if (!$message_id) {
-            $this->error = "Message id is required";
+            $this->error = __("validation.required", ["attribute" => "message"]);
             return false;
         }
         $message = Message::find($message_id);
         if (!$message) {
-            $this->error = "Message not found";
+            $this->error = __("validation.message");
             return false;
         }
         if (!$user_id == $message->sender_id) {
-            $this->error = "You are not authorized to update this message";
+            $this->error = __("validation.update_authorize");
             return false;
         }
         return true;
@@ -65,11 +66,11 @@ class MessageUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            "message.required" => "The message field is required.",
-            "message.max" => "The message may not be greater than 255 characters.",
-            "message.string" => "The message must be a string.",
-            "message_id.exists" => "The message you are trying to update does not exist",
-            "message_id.required" => "The message you are trying to update is required",
+            'message.required' => __('validation.required', ["attribute" => "संदेश"]),
+            'message.max' => __('validation.max', ["attribute" => "संदेश", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "संदेश"]),
+            'message_id.exists' => __("validation.exists", ["attribute" => "संदेश"]),
+            'message_id.required' => __('validation.required', ["attribute" => "संदेश"]),
         ];
     }
 }

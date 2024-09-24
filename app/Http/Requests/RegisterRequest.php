@@ -24,20 +24,22 @@ class RegisterRequest extends FormRequest
         return [
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required",
-            "designation"=>"required"
+            "password" => "required|min:8",
+            "designation" => "required",
+            'language' => 'required|in:en,hi',
         ];
     }
 
     public function messages(): array
     {
         return [
-            "email.unique" => "The email has already been taken.",
-            "email.required" => "The email field is required.",
-            "email.email" => "The email must be a valid email address.",
-            "password.required" => "The password field is required.",
-            "name.required" => "The name field is required.",
-            "designation.required" => "The designation field is required.",
+            "email.unique" => __("validation.unique", ["attribute" => "email"]),
+            "email.email" => __("validation.email", ["attribute" => "email"]),
+            "name.required" => __("validation.required", ["attribute" => "name"]),
+            "designation.required" => __("validation.required", ["attribute" => "designation"]),
+            "email.required" => __("validation.required", ["attribute" => "email"]),
+            "password.required" => __("validation.required", ["attribute" => "password"]),
+            "password.min" => __("validation.min", ["attribute" => "password", "min" => "8"]),
         ];
     }
 }

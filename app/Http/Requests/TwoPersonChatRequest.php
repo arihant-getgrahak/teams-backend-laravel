@@ -11,7 +11,7 @@ class TwoPersonChatRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -25,16 +25,16 @@ class TwoPersonChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message'=>'required|string|max:255',
+            'message' => 'required|string|max:255',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'message.required'=> 'message is required',
-            'message.string'=> 'message must be a string',
-            'message.max'=> 'message can not be longer than 255 character',
+            'message.required' => __('validation.required', ["attribute" => "message"]),
+            'message.max' => __('validation.max', ["attribute" => "message", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "message"]),
         ];
     }
 }

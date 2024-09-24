@@ -32,7 +32,7 @@ class InviteController extends Controller
         if ($request->invitedBy === $request->invitedTo) {
             return response()->json([
                 "status" => false,
-                "message" => "you cannot invite yourself"
+                "message" => __('auth.notinvite'),
             ], 500);
         }
 
@@ -41,7 +41,7 @@ class InviteController extends Controller
         if (!$isOrganizationValid) {
             return response()->json([
                 "status" => false,
-                "message" => "Organization not found"
+                "message" => __('auth.notfound', ['attribute'=> 'Organization']),
             ]);
         }
 
@@ -50,7 +50,7 @@ class InviteController extends Controller
         if (!$checkInvitedByisLegit) {
             return response()->json([
                 "status" => false,
-                "message" => "You have to be admin to invite others."
+                "message" => __('auth.inviteothers'),
             ]);
         }
 
@@ -70,7 +70,7 @@ class InviteController extends Controller
         if (!$user) {
             return response()->json([
                 "status" => false,
-                "message" => "User not found"
+                "message" => __('auth.notfound', ['attribute'=> 'User']),
             ], 404);
         }
 
@@ -78,7 +78,7 @@ class InviteController extends Controller
         if (auth()->user()->id === $user->id) {
             return response()->json([
                 "status" => false,
-                "message" => "You can't invite yourself"
+                "message" => __('auth.notinvite'),
             ], 400);
         }
 
@@ -108,7 +108,7 @@ class InviteController extends Controller
 
         return response()->json([
             "status" => true,
-            "message" => "Invite sent successfully"
+            "message" => __('auth.invite', ['attribute'=> 'Invite']),
         ], 200);
     }
 
@@ -122,14 +122,14 @@ class InviteController extends Controller
         if (!$invite) {
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid Token or Expired'
+                'message' => __('auth.invalid'),
             ], 500);
         }
 
         if ($invite->expires_at < now()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Token Expired'
+                'message' => __('auth.expired'),
             ], 500);
         }
 
@@ -137,14 +137,14 @@ class InviteController extends Controller
         if (!$organization) {
             return response()->json([
                 'status' => false,
-                'message' => 'Organization not found'
+                'message' => __('auth.notfound', ['attribute'=> 'Organization']),
             ], 404);
         }
 
         $userExists = $organization->users->contains('id', $userId);
         if ($userExists) {
             return response()->json([
-                'message' => 'Token Expired',
+                'message' => __('auth.expired'),
             ], 409);
         }
 

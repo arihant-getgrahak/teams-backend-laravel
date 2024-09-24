@@ -11,11 +11,11 @@ class StoreOrganizationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
-    
+
     }
 
     /**
@@ -27,16 +27,16 @@ class StoreOrganizationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description'=> 'nullable|string',
+            'description' => 'nullable|string',
         ];
     }
     public function messages(): array
     {
         return [
-            'name.required'=> 'name is required',
-            'name.string'=> 'name must be string',
-            'name.max' => 'The name may not be greater than 255 characters.',
-            'description.string'=> 'description must be string',
+            'name.required' => __('validation.required', ["attribute" => "name"]),
+            'name.string' => __('validation.string', ["attribute" => "name"]),
+            'name.max' => __('validation.max', ["attribute" => "name", "max" => 255]),
+            'description.string' => __('validation.string', ["attribute" => "description"]),
         ];
     }
 }

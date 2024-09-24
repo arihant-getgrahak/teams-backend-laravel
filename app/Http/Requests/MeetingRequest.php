@@ -11,7 +11,7 @@ class MeetingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -26,19 +26,19 @@ class MeetingRequest extends FormRequest
     {
         return [
             'group_id' => 'required|exists:groups,id',
-            'scheduled_at'=> 'required|date',
-            'title'=> 'required|string|max:255',
+            'scheduled_at' => 'required|date',
+            'title' => 'required|string|max:255',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'group_id.required' => 'Group is required',
-            'group_id.exists' => 'Group does not exist',
-            'scheduled_at.required' => 'Scheduled time is required',
-            'agenda.required' => 'Agenda is required',
-            'agenda.max' => 'Agenda is too long',
+            'group_id.required' => __("validation.required", ["attribute" => "group"]),
+            'group_id.exists' => __('validation.exists', ['attribute' => 'group']),
+            'scheduled_at.required' => __('validation.required', ['attribute' => 'time']),
+            'agenda.required' => __('validation.required', ['attribute' => 'agenda']),
+            'agenda.max' => __('validation.max', ['attribute' => 'agenda', 'max' => 255]),
         ];
     }
 }

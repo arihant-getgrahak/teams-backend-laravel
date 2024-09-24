@@ -32,9 +32,9 @@ class StoreOrganizationGroupMessageRequest extends FormRequest
     public function messages()
     {
         return [
-            'message.required' => 'A message is required.',
-            'message.string' => 'The message must be a string.',
-            'message.max' => 'The message cannot be longer than 255 characters.',
+           'message.required' => __('validation.required', ["attribute" => "message"]),
+           'message.max' => __('validation.max', ["attribute" => "message", "max" => 255]),
+           'message.string' => __('validation.string', ["attribute" => "message"]),
         ];
     }
 }

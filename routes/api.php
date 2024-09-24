@@ -10,30 +10,35 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
+use App\Http\Controllers\LanguageController;
 
-Route::get("/",function(){
+use App\Http\Middleware\LanguageMiddleware;
+
+Route::get("/", function () {
     return response()->json([
-        "status"=>"up",
-        "date"=>now()
-    ],200);
+        "status" => "up",
+        "date" => now()
+    ], 200);
 });
 
-Route::group(["prefix" => "auth"], function () {
-    Route::post("register", [AuthController::class, "register"]);
-    Route::post("login", [AuthController::class, "login"]);
+Route::group(["prefix" => "{local}/auth"], function () {
+    Route::group(["middleware" => LanguageMiddleware::class], function () {
+        Route::post("register", [AuthController::class, "register"]);
+        Route::post("login", [AuthController::class, "login"]);
+    });
 });
 
 
-Route::group(["prefix" => "user"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/user"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::get("logout", [AuthController::class, "logout"]);
         Route::get("/search/{query}", [UserController::class, "search"]);
     });
 });
 
-Route::group(["prefix" => "message"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/message"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::get("/{id}", [MessageController::class, "display"]);
         Route::post("/create", [MessageController::class, "store"]);
         Route::put("/update", [MessageController::class, "update"]);
@@ -41,8 +46,8 @@ Route::group(["prefix" => "message"], function () {
     });
 });
 
-Route::group(["prefix" => "group"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/group"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::get("/{id}", [GroupController::class, "display"]);
         Route::get("/", [GroupController::class, "displayGroup"]);
         Route::get("{group_id}/messages", [GroupController::class, "getGroupMessages"]);
@@ -55,22 +60,22 @@ Route::group(["prefix" => "group"], function () {
     });
 });
 
-Route::group(["prefix" => "meeting"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/meeting"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("schedule", [MeetingController::class, "scheduleMeeting"]);
     });
 });
 
 
-Route::group(["prefix" => "organization"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/organization"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post('/create', [OrganizationController::class, 'store']);
         Route::post('/{organizationId}/groups', [OrganizationController::class, 'createGroup']);
 
         Route::post('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
         Route::get('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
 
-        Route::post("/group/addUser",[OrganizationController::class, 'addGroupUser']);
+        Route::post("/group/addUser", [OrganizationController::class, 'addGroupUser']);
 
         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
@@ -78,12 +83,13 @@ Route::group(["prefix" => "organization"], function () {
     });
 });
 
-Route::group(["prefix" => "invite"], function () {
-    Route::group(["middleware" => "auth:api"], function () {
+Route::group(["prefix" => "{local}/invite"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("create", [InviteController::class, "createToken"]);
     });
 });
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
-// Route::get("/delete",[InviteController::class,"dropTable"]);
+Route::get("/languages", [LanguageController::class, "index"]);
+Route::get("/translation/{lang}", [LanguageController::class, "translation"]);

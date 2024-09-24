@@ -15,28 +15,28 @@ class MessageDeleteRequest extends FormRequest
     public function authorize(): bool
     {
         if (!auth()->check()) {
-            $this->error = "Please login first";
+            $this->error = __("validation.login");
             return false;
         }
         $message_id = $this->message_id;
         if (!$message_id) {
-            $this->error = "The message id is required";
+            $this->error = __("validation.required", ["attribute" => "message"]);
             return false;
         }
         $user_id = auth()->user()->id;
         $message = Message::find($message_id);
-        
+
         if (!$message) {
-            $this->error = "Message not found";
+            $this->error = __("validation.message");
             return false;
         }
         if (!$user_id == $message->sender_id) {
-            $this->error = "You are not authorized to delete this message";
+            $this->error = __("validation.delete_authorize");
             return false;
         }
 
         if ($message->type !== "group") {
-            $this->error = "You can only delete message in group conversation";
+            $this->error = __("validation.group");
             return false;
         }
         return true;
@@ -68,9 +68,9 @@ class MessageDeleteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'message_id.exists' => 'The message you are trying to delete does not exist',
-            'message_id.required' => 'The message you are trying to delete is required',
-            'message_id.string' => 'The message id is of type string',
+            'message_id.exists' => __("validation.exists", ["attribute" => "message"]),
+            'message_id.required' => __('validation.required', ["attribute" => "message"]),
+            'message_id.string' => __('validation.string', ["attribute" => "message"]),
         ];
     }
 }
