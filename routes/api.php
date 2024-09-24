@@ -12,11 +12,13 @@ use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
 use App\Http\Controllers\LanguageController;
 
-Route::get("/",function(){
+use App\Http\Middleware\LanguageMiddleware;
+
+Route::get("/", function () {
     return response()->json([
-        "status"=>"up",
-        "date"=>now()
-    ],200);
+        "status" => "up",
+        "date" => now()
+    ], 200);
 });
 
 Route::group(["prefix" => "auth"], function () {
@@ -71,7 +73,7 @@ Route::group(["prefix" => "organization"], function () {
         Route::post('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'store']);
         Route::get('/groups/{groupId}/messages', [OrganizationGroupMessageController::class, 'index']);
 
-        Route::post("/group/addUser",[OrganizationController::class, 'addGroupUser']);
+        Route::post("/group/addUser", [OrganizationController::class, 'addGroupUser']);
 
         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
@@ -87,4 +89,4 @@ Route::group(["prefix" => "invite"], function () {
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
-Route::get("/locale/{lang}",[LanguageController::class,"index"]);
+Route::get("/locale", [LanguageController::class, "index"])->middleware(LanguageMiddleware::class);

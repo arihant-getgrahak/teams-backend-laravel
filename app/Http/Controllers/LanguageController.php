@@ -6,9 +6,8 @@ use App;
 
 class LanguageController extends Controller
 {
-    public function index(string $lang)
+    public function index()
     {
-        App::setLocale($lang);
         // dd(App::getLocale());
 
         return response()->json([
