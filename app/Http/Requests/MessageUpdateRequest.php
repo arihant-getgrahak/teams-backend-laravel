@@ -65,11 +65,11 @@ class MessageUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            "message.required" => "The message field is required.",
-            "message.max" => "The message may not be greater than 255 characters.",
-            "message.string" => "The message must be a string.",
-            "message_id.exists" => "The message you are trying to update does not exist",
-            "message_id.required" => "The message you are trying to update is required",
+            'message.required' => __('validation.required', ["attribute" => "संदेश"]),
+            'message.max' => __('validation.max', ["attribute" => "संदेश", "max" => 255]),
+            'message.string' => __('validation.string', ["attribute" => "संदेश"]),
+            'message_id.exists' => __("validation.exists", ["attribute" => "संदेश"]),
+            'message_id.required' => __('validation.required', ["attribute" => "संदेश"]),
         ];
     }
 }
