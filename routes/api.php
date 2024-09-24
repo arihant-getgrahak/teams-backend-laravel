@@ -10,6 +10,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
+use App\Http\Controllers\LanguageController;
 
 Route::get("/",function(){
     return response()->json([
@@ -86,4 +87,4 @@ Route::group(["prefix" => "invite"], function () {
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
-// Route::get("/delete",[InviteController::class,"dropTable"]);
+Route::get("/locale/{lang}",[LanguageController::class,"index"]);
