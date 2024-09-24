@@ -61,4 +61,8 @@ return [
     "email" => ":attribute एक वैध ईमेल पता होना चाहिए|",
     "exists" => ":attribute नहीं मिला है|",
     "min" => ":attribute कम से कम :min लंबा होना चाहिए|",
+    "max" => ":attribute ज्यादा से ज्यादा :max लंबा होना चाहिए|",
+    "in" => ":attribute एक वैध मान होना चाहिए|",
+    "integer" => ":attribute एक अंक होना चाहिए|",
+    "string" => ":attribute एक स्ट्रिंग होना चाहिए|",
 ];
