@@ -1,15 +1,6 @@
 <?php
 
 return [
-    // 'user' =>
-    //     [
-    //         'user_id_required' => 'उपयोगकर्ता आईडी फ़ील्ड आवश्यक है|',
-    //         'user_id_exists' => 'उपयोगकर्ता आईडी मौजूद नहीं है|',
-    //         'second_user_id_required' => 'दुसरा उपयोगकर्ता आईडी फ़ील्ड आवश्यक है|',
-    //         'second_user_id_exists' => 'दुसरा उपयोगकर्ता आईडी मौजूद नहीं है|',
-    //         'group_id_required' => 'समूह आईडी फ़ील्ड आवश्यक है|',
-    //         'group_id_exists' => 'समूह आईडी मौजूद नहीं है|',
-    //     ],
 
     // 'group' =>
     //     [
@@ -37,7 +28,7 @@ return [
     //         "organization_id.required" => "संगठन_आईडी फ़ील्ड आवश्यक है|",
     //         "organization_id.exists" => "संगठन_आईडी मौजूद नहीं है|",
     //     ],
-    
+
     // 'meeting' =>
     //     [
     //         'scheduled_at.required' => 'निर्धारित समय आवश्यक है|',

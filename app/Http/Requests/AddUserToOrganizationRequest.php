@@ -11,7 +11,7 @@ class AddUserToOrganizationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()) {
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -31,8 +31,8 @@ class AddUserToOrganizationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required'=> 'user_id is required',
-            "user_id.exists" => "User id does not exist",
+            'user_id.required' => __("validation.required", ["attribute" => "उपयोगकर्ता आईडी"]),
+            "user_id.exists" => __("validation.exists", ["attribute" => "उपयोगकर्ता आईडी"]),
         ];
     }
 
