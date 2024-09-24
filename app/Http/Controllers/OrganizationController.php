@@ -5,8 +5,7 @@ use App\Http\Requests\AddUserToOrganizationRequest;
 use App\Http\Requests\CreateGroupRequest;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Models\OrganizationGroup;
-use App\Models\User;
-use App\Http\Requests\addUserGroupRequest;
+use App\Http\Requests\AddUserGroupRequest;
 use App\Models\Organization;
 use Request;
 
@@ -35,7 +34,7 @@ class OrganizationController extends Controller
     }
 
 
-    public function addGroupUser(addUserGroupRequest $request)
+    public function addGroupUser(AddUsergroupRequest $request)
     {
         $organization = Organization::where('id', $request->organization_id)->first();
         $userExists = $organization->users->contains('id', $request->user_id);

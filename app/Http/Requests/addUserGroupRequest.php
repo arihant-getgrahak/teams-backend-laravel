@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class addUserGroupRequest extends FormRequest
+class AddUserGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,14 +32,15 @@ class addUserGroupRequest extends FormRequest
         ];
     }
 
-    public function messages(): array{
+    public function messages(): array
+    {
         return [
-            'user_id.required' => 'The user id field is required.',
-            'user_id.exists' => 'The user id does not exist.',
-            'second_user_id.required' => 'The user id field is required.',
-            'second_user_id.exists' => 'The user id does not exist.',
-            'group_id.required' => 'The group id field is required.',
-            'group_id.exists' => 'The group id does not exist.',
+            'user_id.required' => __("validation.required", ["attribute" => "उपयोगकर्ता आईडी"]),
+            'user_id.exists' => __("validation.exists", ["attribute" => "उपयोगकर्ता आईडी"]),
+            'second_user_id.required' => __("validation.required", ["attribute" => "दुसरा उपयोगकर्ता आईडी"]),
+            'second_user_id.exists' => __("validation.exists", ["attribute" => "दुसरा उपयोगकर्ता आईडी"]),
+            'group_id.required' => __("validation.required", ["attribute" => "समूह आईडी"]),
+            'group_id.exists' => __("validation.exists", ["attribute" => "समूह आईडी"]),
         ];
     }
 }
