@@ -27,7 +27,7 @@ class OrganizationController extends Controller
     {
         $organization = Organization::findOrFail($organizationId);
         if ($organization->groups()->where('name', $request->name)->exists()) {
-            return response()->json(['message' => 'A group with same name already exists'], 409);
+            return response()->json(['message' => __('auth.same', ['attribute' => 'Group'])], 409);
         }
         $group = $organization->groups()->create($request->all());
         return response()->json($group);
@@ -41,14 +41,14 @@ class OrganizationController extends Controller
         if (!$userExists) {
             return response()->json([
                 "status" => false,
-                'message' => 'User have to be in the organization',
+                'message' => __('auth.user', ['attribute' => 'User']),
             ], 409);
         }
 
         $isGroupExist = OrganizationGroup::where('id', $request->group_id)->first();
         if (!$isGroupExist) {
             return response()->json([
-                'message' => 'Group does not exist',
+                'message' => __('auth.notexists', ['attribute'=> 'Group']),
                 "status" => false
             ], 409);
         }
@@ -56,13 +56,13 @@ class OrganizationController extends Controller
         $userExists = $isGroupExist->users->contains('id', $request->user_id);
         if ($userExists) {
             return response()->json([
-                'message' => 'User already added to group',
+                'message' => __('auth.alreadyadded', ['attribute'=> 'User']),
             ], 409);
         }
         $userExists = $isGroupExist->users->contains('id', $request->second_user_id);
         if ($userExists) {
             return response()->json([
-                'message' => 'Second User already added to group',
+                'message' => __('auth.alreadyadded', ['attribute'=> 'SecondUser']),
             ], 409);
         }
         $isGroupExist->users()->attach($request->user_id);
@@ -70,7 +70,7 @@ class OrganizationController extends Controller
 
         return response()->json([
             "status" => true,
-            "message" => "User added to group successfully",
+            "message" => __('auth.added', ['attribute'=> 'User']),
             "data" => $isGroupExist->users
         ], 200);
     }

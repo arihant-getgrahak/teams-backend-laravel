@@ -21,12 +21,13 @@ class AuthController extends Controller
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "designation" => $request->designation,
+            "language" => $request->language,
         ]);
 
         // Response
         return response()->json([
             "status" => true,
-            "message" => "User registered successfully"
+            "message" => __('auth.register', ['attribute'=> 'user']),
         ], 200);
     }
 
@@ -43,7 +44,7 @@ class AuthController extends Controller
 
             return response()->json([
                 "status" => true,
-                "message" => "User logged in succcessfully",
+                "message" => __('auth.login'),
                 "token" => $token
             ], 200);
         }
@@ -51,7 +52,7 @@ class AuthController extends Controller
         // Response
         return response()->json([
             "status" => false,
-            "message" => "Invalid details"
+            "message" => __('auth.failed'),
         ], 401);
     }
 
@@ -62,7 +63,7 @@ class AuthController extends Controller
 
         return response()->json([
             "status" => true,
-            "message" => "Profile data",
+            "message" => "__(auth.profile)",
             "data" => $userdata,
         ], 200);
     }
@@ -78,7 +79,7 @@ class AuthController extends Controller
         if ($invalidate) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Successfully logged out',
+                'message' => '__(auth.logout)',
             ], 200);
         }
     }

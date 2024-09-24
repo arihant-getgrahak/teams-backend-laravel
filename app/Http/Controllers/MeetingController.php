@@ -14,14 +14,14 @@ class MeetingController extends Controller
         if (auth()->user()->id !== $group->created_by) {
             return response()->json([
                 "status" => false,
-                "message"=> "You are not authorized to schedule meeting",
+                "message"=> __("auth.notauthorized"),
             ], 500);
         }
 
         $meeting = Meeting::create($request->all());
         return response()->json([
             "status" => true,
-            "message" => "Meeting scheduled successfully",
+            "message" => __('auth.scheduled'),
             "data" => $meeting
         ], 200);
     }

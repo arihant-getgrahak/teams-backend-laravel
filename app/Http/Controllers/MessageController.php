@@ -18,7 +18,7 @@ class MessageController extends Controller
         if(!User::where("id", $id)->exists()){
             return response()->json([
                 "status"=>false,
-                "message" => "User not found"
+                "message" => __('auth.notfound', ['attribute'=> 'User']),
             ], 404);
         }
         $message = Message::where(function ($query) use ($id) {
@@ -65,7 +65,7 @@ class MessageController extends Controller
         // SendMessage::dispatch($message);
         return response()->json([
             "status" => true,
-            "message" => "Message sent successfully"
+            "message" => __('auth.sent', ['attribute'=> 'Message']),
         ], 200);
     }
 
@@ -77,7 +77,7 @@ class MessageController extends Controller
             if ($message->isDelete) {
                 return response()->json([
                     "status" => false,
-                    "message" => "You can delete message once"
+                    "message" => __('auth.deleteonce'),
                 ], 500);
             }
 
@@ -87,7 +87,7 @@ class MessageController extends Controller
             return response()->json([
                 "status" => true,
                 "data" => $message,
-                "message" => "Message deleted successfully"
+                "message" => __('auth.deleted', ['attribute'=> 'Message']),
             ], 200);
             
         } catch (\Exception $e) {
@@ -110,7 +110,7 @@ class MessageController extends Controller
             if ($message->isUpdate) {
                 return response()->json([
                     "status" => false,
-                    "message" => "You can update message once"
+                    "message" => __('auth.once'),
                 ], 500);
             }
 
@@ -120,7 +120,7 @@ class MessageController extends Controller
 
             return response()->json([
                 "status" => true,
-                "message" => "Message updated successfully",
+                "message" => __('auth.updated', ['attribute'=> 'Message']),
                 "data" => $message
             ], 200);
 
