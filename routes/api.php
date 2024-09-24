@@ -90,3 +90,5 @@ Route::group(["prefix" => "{local}/invite"], function () {
 });
 
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
+
+Route::get("/languages", [LanguageController::class, "index"]);
