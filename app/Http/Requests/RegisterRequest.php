@@ -24,8 +24,9 @@ class RegisterRequest extends FormRequest
         return [
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required",
-            "designation"=>"required"
+            "password" => "required|min:5|confirmed",
+            "designation"=>"required",
+            'language' => 'required|in:en,hi',
         ];
     }
 
@@ -38,6 +39,7 @@ class RegisterRequest extends FormRequest
             "password.required" => "The password field is required.",
             "name.required" => "The name field is required.",
             "designation.required" => "The designation field is required.",
+            'language.required' => __('auth.language'),
         ];
     }
 }
