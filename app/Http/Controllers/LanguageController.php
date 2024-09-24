@@ -29,5 +29,9 @@ class LanguageController extends Controller
     }
     public function translation(string $lang)
     {
+        App::setLocale($lang);
+        return response()->json([
+            "data" => [__("auth"), __("validation")],
+        ]);
     }
 }
