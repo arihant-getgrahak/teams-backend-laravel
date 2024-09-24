@@ -32,9 +32,9 @@ class GroupCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.max' => 'The name may not be greater than 255 characters.',
-            'name.string' => 'The name must be a string.',
+            "name.required" => __("validation.required", ["attribute" => "नाम"]),
+            "name.max" => __("validation.max", ["attribute" => "नाम", "max" => 255]),
+            "name.string" => __("validation.string", ["attribute" => "नाम"]),
         ];
     }
 }
