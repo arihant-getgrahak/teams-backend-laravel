@@ -25,7 +25,7 @@ class MessageDeleteRequest extends FormRequest
         }
         $user_id = auth()->user()->id;
         $message = Message::find($message_id);
-        
+
         if (!$message) {
             $this->error = "Message not found";
             return false;
@@ -68,9 +68,9 @@ class MessageDeleteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'message_id.exists' => 'The message you are trying to delete does not exist',
-            'message_id.required' => 'The message you are trying to delete is required',
-            'message_id.string' => 'The message id is of type string',
+            'message_id.exists' => __("validation.exists", ["attribute" => "संदेश"]),
+            'message_id.required' => __('validation.required', ["attribute" => "संदेश"]),
+            'message_id.string' => __('validation.string', ["attribute" => "संदेश"]),
         ];
     }
 }
