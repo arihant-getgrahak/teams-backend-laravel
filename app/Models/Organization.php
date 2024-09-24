@@ -42,26 +42,9 @@ class Organization extends Model
     {
         return $this->belongsTo(Group::class);
     }
-
-
-        'name',
-        'description',
-        "created_by"
-    ];
-
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'organization_user');
-    }
-
     public function groups()
     {
         return $this->hasMany(OrganizationGroup::class);
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, "created_by");
     }
 
 }
