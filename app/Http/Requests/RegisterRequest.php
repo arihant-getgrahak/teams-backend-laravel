@@ -25,19 +25,19 @@ class RegisterRequest extends FormRequest
             "name" => "required",
             "email" => "required|email|unique:users",
             "password" => "required",
-            "designation"=>"required"
+            "designation" => "required"
         ];
     }
 
     public function messages(): array
     {
         return [
-            "email.unique" => "The email has already been taken.",
-            "email.required" => "The email field is required.",
-            "email.email" => "The email must be a valid email address.",
-            "password.required" => "The password field is required.",
-            "name.required" => "The name field is required.",
-            "designation.required" => "The designation field is required.",
+            "email.unique" => __("validation.unique", ["attribute" => "ईमेल"]),
+            "email.email" => __("validation.email", ["attribute" => "ईमेल"]),
+            "name.required" => __("validation.required", ["attribute" => "नाम"]),
+            "designation.required" => __("validation.required", ["attribute" => "पद का नाम"]),
+            "email.required" => __("validation.required", ["attribute" => "ईमेल"]),
+            "password.required" => __("validation.required", ["attribute" => "पासवर्ड"]),
         ];
     }
 }
