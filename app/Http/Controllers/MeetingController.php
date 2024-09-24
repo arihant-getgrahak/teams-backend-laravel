@@ -24,5 +24,9 @@ class MeetingController extends Controller
             "message" => "Meeting scheduled successfully",
             "data" => $meeting
         ], 200);
+
+        
     }
+
+
 }

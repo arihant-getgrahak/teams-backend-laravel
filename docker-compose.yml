@@ -1,62 +1,40 @@
-version: '3'
-services:
+networks:
+  teams-net:
+    driver: bridge
 
-#MySQL Service
+
+volumes:
+  data:
+    driver: local
+
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - './:/var/www'
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+    depends_on:
+      - app
+      - db
+
+  app:
+    image: app
+    build: 
+      context: .
+      dockerfile: DockerFile
+    volumes:
+      - ./.:/var/www
+    working_dir: /var/www
+    depends_on:
+      - db
+
   db:
     image: mysql:8.0
-    container_name: mysql_db
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 'password01'
-      MYSQL_USER: 'arihant'
-      MYSQL_PASS: 'password01'
-    volumes:
-      - ./dbdata/:/var/lib/mysql/
-    networks:
-      - app-network
-
-  #PHP Service
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: digitalocean.com/php
-    container_name: app
-    restart: unless-stopped
-    tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    networks:
-      - app-network
-
-  #Nginx Service
-  webserver:
-    image: nginx:alpine
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - app-network
-
-
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge
-#Volumes
-volumes:
-  dbdata:
-    driver: local
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=teams_db
+      - MYSQL_USER=teams_user
+      - MYSQL_PASSWORD=password
