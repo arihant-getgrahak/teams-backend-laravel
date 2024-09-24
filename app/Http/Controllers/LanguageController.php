@@ -13,6 +13,7 @@ class LanguageController extends Controller
         return response()->json([
             "lang" => App::getLocale(),
             'message' => __('welcome.message'),
+            "email" => __("validation.user.second_user_id_required"),
         ]);
     }
 }

@@ -22,8 +22,10 @@ Route::get("/", function () {
 });
 
 Route::group(["prefix" => "auth"], function () {
-    Route::post("register", [AuthController::class, "register"]);
-    Route::post("login", [AuthController::class, "login"]);
+    Route::group(["middleware" => LanguageMiddleware::class], function () {
+        Route::post("register", [AuthController::class, "register"]);
+        Route::post("login", [AuthController::class, "login"]);
+    });
 });
 
 
