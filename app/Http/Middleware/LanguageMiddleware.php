@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use URL;
 
 class LanguageMiddleware
 {
@@ -15,12 +16,13 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $locale = $request->segment(2);
         $lang = ["en", "hi"];
-        $locale = $request->header('Accept-Language');
         if (!in_array($locale, $lang)) {
             $locale = config('app.fallback_locale');
         }
         app()->setLocale($locale);
+
         return $next($request);
     }
 }
