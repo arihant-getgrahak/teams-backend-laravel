@@ -16,8 +16,13 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->segment(2);
         $lang = ["en", "hi"];
+        if (auth()->check()) {
+            $locale = $user->language ?? config('app.fallback_locale');
+        } else {
+            $locale = $request->segment(2);
+
+        }
         if (!in_array($locale, $lang)) {
             $locale = config('app.fallback_locale');
         }
@@ -25,4 +30,5 @@ class LanguageMiddleware
 
         return $next($request);
     }
+
 }
