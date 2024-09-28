@@ -12,17 +12,6 @@ class UpdateProfileController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = User::find(auth()->user()->id);
-        // $data = [
-        //     "name" => $request->name,
-        //     "profile_image" => $request->hasFile('profile_image') ? $this->uploadProfileImage($request->file('profile_image')) : $user->profile_image
-        // ];
-
-        // if (auth()->user()->id != $id) {
-        //     return response()->json([
-        //         "status" => false,
-        //         "message" => "Unauthorized",
-        //     ], 401);
-        // }
         $data = $request->only([
             "name",
             "email",
@@ -56,18 +45,4 @@ class UpdateProfileController extends Controller
         return $uploadedImageUrl;
     }
 
-    // public function getProfile()
-    // {
-    //     $user = Auth::user();
-
-    //     $user->profile_image_url = $user->profile_image ? asset("storage/" . $user->profile_image) : null;
-    //     return response()->json([
-    //         "status" => true,
-    //         "message" => "Profile data",
-    //         "data" => [
-    //             'name' => $user->name,
-    //             'profile_image' => $user->profile_image_url,
-    //         ],
-    //     ]);
-    // }
 }
