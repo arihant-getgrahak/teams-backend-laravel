@@ -11,6 +11,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\UpdateProfileController;
 
 use App\Http\Middleware\LanguageMiddleware;
 
@@ -34,6 +35,7 @@ Route::group(["prefix" => "{local}/user"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::get("logout", [AuthController::class, "logout"]);
         Route::get("/search/{query}", [UserController::class, "search"]);
+        Route::put("update/profile", [UpdateProfileController::class, "updateProfile"]);
     });
 });
 
