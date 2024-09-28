@@ -10,10 +10,11 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
-use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UploadMediaController;
 use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Controllers\UpdateProfileController;
+use App\Http\Controllers\LanguageController;
+
 
 Route::get("/", function () {
     return response()->json([
@@ -35,6 +36,7 @@ Route::group(["prefix" => "{local}/user"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::get("logout", [AuthController::class, "logout"]);
         Route::get("/search/{query}", [UserController::class, "search"]);
+        Route::put("update/profile", [UpdateProfileController::class, "updateProfile"]);
     });
 });
 
@@ -90,14 +92,15 @@ Route::group(["prefix" => "{local}/invite"], function () {
     });
 });
 
-Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
+Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
 
 Route::group(["prefix" => "media"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("{message_id}/media", [UploadMediaController::class, "uploadMedia"]);
     });
+
 });
 
 Route::group(["prefix" => "{local}/user"], function () {
@@ -106,5 +109,7 @@ Route::group(["prefix" => "{local}/user"], function () {
         Route::put("update/profile", [UpdateProfileController::class, "updateProfile"]);
     });
 });
+
+
 Route::get("/languages", [LanguageController::class, "index"]);
 Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
