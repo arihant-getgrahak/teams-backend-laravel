@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App;
+use App\Events\MessageSendEvent;
 
 class LanguageController extends Controller
 {
     public function index()
     {
+        // broadcast(new MessageSendEvent("Hello from broadcast"))->toOthers();
         return response()->json([
             "status" => "success",
             "message" => "Language fetched Successfully",
@@ -31,7 +33,11 @@ class LanguageController extends Controller
     {
         App::setLocale($lang);
         return response()->json([
-            "data" => [__("auth"), __("validation")],
+            [
+                "status" => true,
+                "message" => "Translations fetched successfully.",
+                "data" => __("translation"),
+            ]
         ]);
     }
 }
