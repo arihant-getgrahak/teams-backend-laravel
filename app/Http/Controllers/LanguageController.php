@@ -8,12 +8,30 @@ class LanguageController extends Controller
 {
     public function index()
     {
-        // dd(App::getLocale());
-
         return response()->json([
-            "lang" => App::getLocale(),
-            'message' => __('welcome.message'),
-            "email" => __("validation.user.second_user_id_required"),
+            "status" => "success",
+            "message" => "Language fetched Successfully",
+            "data" => [
+                [
+                    "name" => "Hindi",
+                    "name_native" => "हिन्दी",
+                    "iso_code" => "hi",
+                    "greetings" => "नमस्ते"
+                ],
+                [
+                    "name" => "English",
+                    "name_native" => "English",
+                    "iso_code" => "en",
+                    "greetings" => "Howdy!"
+                ]
+            ]
+        ]);
+    }
+    public function translation(string $lang)
+    {
+        App::setLocale($lang);
+        return response()->json([
+            "data" => [__("auth"), __("validation")],
         ]);
     }
 }

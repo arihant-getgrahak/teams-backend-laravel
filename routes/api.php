@@ -93,6 +93,7 @@ Route::group(["prefix" => "{local}/invite"], function () {
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
 
+
 Route::group(["prefix" => "media"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("{message_id}/media", [UploadMediaController::class, "uploadMedia"]);
@@ -105,3 +106,5 @@ Route::group(["prefix" => "{local}/user"], function () {
         Route::post("update/profile", [UpdateProfileController::class, "updateProfile"]);
     });
 });
+Route::get("/languages", [LanguageController::class, "index"]);
+Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
