@@ -1,61 +1,61 @@
 {
-    "status": "success",
-    "message": "Translations fetched successfully.",
-    "data": {
-      "onboarding": {
-        "auth": {
-          "register": {
-            "title": "Register",
-            "name_placeholder": "Enter Your Name",
-            "email_placeholder": "Enter Your Email",
-            "password_placeholder": "Enter Your Password",
-            "confirm_password_placeholder": "Confirm Your Password",
-            "designation_placeholder": "Enter Your Designation",
-            "already_have_account": "Already have an account?",
-            "login_button_text": "Login",
-            "submit_button_text": "Register",
-            "create_account_button_text": "Create Account"
-          },
-          "login": {
-            "title": "Login",
-            "email_placeholder": "Enter Your Email",
-            "password_placeholder": "Enter Your Password",
-            "submit_button_text": "Login",
-            "dont_have_account": "Don't Have an Account?",
-            "register_button_text": "Register"
-          }
+  "status": "success",
+  "message": "Translations fetched successfully.",
+  "data": {
+    "onboarding": {
+      "auth": {
+        "register": {
+          "title": "पंजीकरण करें",
+          "name_placeholder": "अपना नाम दर्ज करें",
+          "email_placeholder": "अपना ईमेल दर्ज करें",
+          "password_placeholder": "अपना पासवर्ड दर्ज करें",
+          "confirm_password_placeholder": "अपना पासवर्ड पुष्टि करें",
+          "designation_placeholder": "अपना पदनाम दर्ज करें",
+          "already_have_account": "पहले से ही एक खाता है?",
+          "login_button_text": "लॉगिन करें",
+          "submit_button_text": "पंजीकरण करें",
+          "create_account_button_text": "खाता बनाएँ"
         },
-        "homeScreen": {
-          "title": "Home",
-          "options": {
-            "profile": "Profile",
-            "new_chat": "New Chat",
-            "search": "Search",
-            "schedule": "Schedule",
-            "join_chat": "Join Chat",
-            "search_user": "Search User"
-          }
-        },
-        "newChat": {
-          "title": "New Chat",
-          "start_new_chat": "Start a New Chat",
-          "username_placeholder": "Enter Username",
-          "receiver_id_placeholder": "Enter Receiver ID",
-          "start_chat_button": "Start Chat",
-          "search_user_button": "Search User",
-          "no_user_found": "No User Found",
-          "search_for_user": "Search For User"
-        },
-        "chatScreen": {
-          "title": "Chat Screen",
-          "type_here_placeholder": "Type Message Here"
-        },
-        "profile": {
-          "title": "Profile",
-          "name_placeholder": "Enter Your Name",
-          "email_placeholder": "Enter Your Email",
-          "designation_placeholder": "Enter Your Designation"
-        },
-      },
-    },
+        "login": {
+          "title": "लॉगिन करें",
+          "email_placeholder": "अपना ईमेल दर्ज करें",
+          "password_placeholder": "अपना पासवर्ड दर्ज करें",
+          "submit_button_text": "लॉगिन करें",
+          "dont_have_account": "खाता नहीं है?",
+          "register_button_text": "पंजीकरण करें"
+        }
+      },
+      "homeScreen": {
+        "title": "होम",
+        "options": {
+          "profile": "प्रोफ़ाइल",
+          "new_chat": "नया चैट",
+          "search": "खोजें",
+          "schedule": "अनुसूची",
+          "join_chat": "चैट में शामिल हों",
+          "search_user": "उपयोगकर्ता खोजें"
+        }
+      },
+      "newChat": {
+        "title": "नया चैट",
+        "start_new_chat": "एक नया चैट शुरू करें",
+        "username_placeholder": "उपयोगकर्ता नाम दर्ज करें",
+        "receiver_id_placeholder": "प्राप्तकर्ता आईडी दर्ज करें",
+        "start_chat_button": "चैट शुरू करें",
+        "search_user_button": "उपयोगकर्ता खोजें",
+        "no_user_found": "कोई उपयोगकर्ता नहीं मिला",
+        "search_for_user": "उपयोगकर्ता की खोज करें"
+      },
+      "chatScreen": {
+        "title": "चैट स्क्रीन",
+        "type_here_placeholder": "यहाँ संदेश लिखें"
+      },
+      "profile": {
+        "title": "प्रोफ़ाइल",
+        "name_placeholder": "अपना नाम दर्ज करें",
+        "email_placeholder": "अपना ईमेल दर्ज करें",
+        "designation_placeholder": "अपना पदनाम दर्ज करें"
+      }
+    }
   }
+}
