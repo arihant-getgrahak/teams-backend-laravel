@@ -102,6 +102,6 @@ Route::group(["prefix" => "media"], function () {
 Route::group(["prefix" => "{local}/user"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         // Route::get("profile", [UpdateProfileController::class, "getProfile"]);
-        Route::post("update/profile", [UpdateProfileController::class, "updateProfile"]);
+        Route::put("update/profile", [UpdateProfileController::class, "updateProfile"]);
     });
 });
