@@ -96,18 +96,11 @@ Route::group(["prefix" => "{local}/invite"], function () {
 Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyToken"]);
 
 
-Route::group(["prefix" => "media"], function () {
+Route::group(["prefix" => "{local}/media"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("{message_id}/media", [UploadMediaController::class, "uploadMedia"]);
     });
 
-});
-
-Route::group(["prefix" => "{local}/user"], function () {
-    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
-        // Route::get("profile", [UpdateProfileController::class, "getProfile"]);
-        Route::put("update/profile", [UpdateProfileController::class, "updateProfile"]);
-    });
 });
 
 
