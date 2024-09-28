@@ -132,4 +132,5 @@ class MessageController extends Controller
             ], 500);
         }
     }
+    
 }

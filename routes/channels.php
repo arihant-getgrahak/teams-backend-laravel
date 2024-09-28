@@ -8,6 +8,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('teams-chat-channel.{userId}', function (User $user, $userId) {
-    dd($userId);
-    // return true;
+    return "Hello I am working $userId";
 });
