@@ -6,21 +6,26 @@ use Illuminate\Http\Request;
 use Storage;
 use Auth;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Models\User;
 class UpdateProfileController extends Controller
 {
     public function updateProfile(UpdateProfileRequest $request)
     {
-        $user = Auth::user();
-        $data = [
-            "name" => $request->name,
-            "profile_image" => $request->hasFile('profile_image') ? $this->uploadProfileImage($request->file('profile_image')) : $user->profile_image
-        ];
+        $user = User::find(auth()->user()->id);
+        $data = $request->only([
+            "name",
+            "email",
+        ]);
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $this->uploadImage($request->file('profile_image'));
+        }
 
         $isUpdate = $user->update(attributes: $data);
         if ($isUpdate) {
             return response()->json([
                 "status" => true,
                 "message" => "Profile updated successfully",
+                "data" => $user->fresh(),
             ], 200);
         }
         return response()->json([
@@ -30,7 +35,7 @@ class UpdateProfileController extends Controller
 
     }
 
-    protected function uploadProfileImage($file)
+    protected function uploadImage($file)
     {
         $uploadFolder = 'profile-image';
         $image = $file;
@@ -40,18 +45,4 @@ class UpdateProfileController extends Controller
         return $uploadedImageUrl;
     }
 
-    // public function getProfile()
-    // {
-    //     $user = Auth::user();
-
-    //     $user->profile_image_url = $user->profile_image ? asset("storage/" . $user->profile_image) : null;
-    //     return response()->json([
-    //         "status" => true,
-    //         "message" => "Profile data",
-    //         "data" => [
-    //             'name' => $user->name,
-    //             'profile_image' => $user->profile_image_url,
-    //         ],
-    //     ]);
-    // }
 }
