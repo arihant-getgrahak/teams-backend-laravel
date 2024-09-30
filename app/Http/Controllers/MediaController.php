@@ -254,7 +254,7 @@ class MediaController extends Controller
         }
     }
 
-    public function getAllMediaByOrganization($lang, $organizationId)
+    public function getAllMediaByOrganization($organizationId)
     {
         $media = OrganizationTwoPersonMedia::where('organization_id', $organizationId)->get();
 
@@ -271,7 +271,7 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getAllMediaByGroup($lang, $groupId)
+    public function getAllMediaByGroup($groupId)
     {
 
         $media = OrganizationGroupMedia::where('organization_group_id', $groupId)->get();
@@ -289,7 +289,7 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getAllMediaForTwoPersons($lang, $organizationId, $senderId, $receiverId)
+    public function getAllMediaForTwoPersons($organizationId, $senderId, $receiverId)
     {
         $media = OrganizationTwoPersonMedia::where('organization_id', $organizationId)
             ->where('sender_id', $senderId)
@@ -309,7 +309,7 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getMediaByReceiver($lang, $receiverId)
+    public function getMediaByReceiver($receiverId)
     {
         $mediaFiles = Media::where('receiver_id', $receiverId)->get();
 
