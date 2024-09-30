@@ -25,7 +25,8 @@ class MediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,zip|max:2048',
+            'files' => 'required|array',
+            'files.*' => 'file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,zip|max:2048',
             'receiver_id' => 'nullable',
 
         ];
