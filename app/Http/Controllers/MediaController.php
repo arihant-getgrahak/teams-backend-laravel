@@ -137,7 +137,7 @@ class MediaController extends Controller
 
     public function uploadGroupMedia(GroupMediaRequest $request)
     {
-
+        $sender_id = auth()->user()->id;
         $mediaFiles = [];
         if ($request->hasFile('files')) {
             if (is_array($request->file('files'))) {
@@ -150,7 +150,7 @@ class MediaController extends Controller
                         'filename' => $filename,
                         'file_path' => $filePath,
                         'group_id' => $request->group_id,
-
+                        "sender_id" => $sender_id
                     ]);
 
                     $mediaFiles[] = $media;
@@ -169,6 +169,7 @@ class MediaController extends Controller
                 'filename' => $filename,
                 'file_path' => $filePath,
                 'group_id' => $request->group_id,
+                "sender_id" => $sender_id
 
             ]);
             return response()->json([

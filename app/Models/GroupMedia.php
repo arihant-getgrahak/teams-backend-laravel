@@ -26,10 +26,16 @@ class GroupMedia extends Model
         'filename',
         'file_path',
         'group_id',
+        "sender_id"
     ];
 
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, "sender_id");
     }
 }
