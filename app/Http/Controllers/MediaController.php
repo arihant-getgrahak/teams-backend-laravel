@@ -254,22 +254,22 @@ class MediaController extends Controller
         }
     }
 
-    public function getAllMediaByOrganization($organizationId)
-    {
-        $media = OrganizationTwoPersonMedia::where('organization_id', $organizationId)->get();
+    // public function getAllMediaByOrganization($organizationId)
+    // {
+    //     $media = OrganizationTwoPersonMedia::where('organization_id', $organizationId)->get();
 
-        if ($media->isEmpty()) {
-            return response()->json([
-                'message' => 'No media found for the specified organization',
-                'status' => 'false'
-            ], 404);
-        }
+    //     if ($media->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No media found for the specified organization',
+    //             'status' => 'false'
+    //         ], 404);
+    //     }
 
-        return response()->json([
-            'message' => 'Media retrieved successfully',
-            'media' => $media
-        ], 200);
-    }
+    //     return response()->json([
+    //         'message' => 'Media retrieved successfully',
+    //         'media' => $media
+    //     ], 200);
+    // }
 
     public function getAllMediaByGroup($groupId)
     {
@@ -289,8 +289,11 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getAllMediaForTwoPersons($organizationId, $senderId, $receiverId)
+    public function getAllMediaForTwoPersons($receiverId)
     {
+        $user = User::where('id', $receiverId)->first();
+        $organizationId = $user->organizations[0]["id"];
+        $senderId = auth()->id();
         $media = OrganizationTwoPersonMedia::where('organization_id', $organizationId)
             ->where('sender_id', $senderId)
             ->where('receiver_id', $receiverId)
