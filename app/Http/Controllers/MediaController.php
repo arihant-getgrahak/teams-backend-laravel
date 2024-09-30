@@ -32,8 +32,6 @@ class MediaController extends Controller
                         'file_path' => $filePath,
 
                         'receiver_id' => $request->receiver_id,
-                        // 'group_id' => $request->group_id ?? "dd",
-
                     ]);
 
                     $mediaFiles[] = $media;
@@ -53,8 +51,6 @@ class MediaController extends Controller
                 'file_path' => $filePath,
 
                 'receiver_id' => $request->receiver_id,
-                // 'group_id' => $request->group_id ?? "dd",
-
             ]);
             return response()->json([
                 'message' => 'Files uploaded successfully',
