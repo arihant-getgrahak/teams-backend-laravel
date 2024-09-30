@@ -153,8 +153,8 @@ class MediaController extends Controller
                 ], 200);
             }
 
-            $filename = time() . '-' . $request->file('file')->getClientOriginalName();
-            $fileurl = $this->uploadImage($request->file('file'));
+            $filename = time() . '-' . $request->file('files')->getClientOriginalName();
+            $fileurl = $this->uploadImage($request->file('files'));
             $filePath = $fileurl;
 
             $media = GroupMedia::create([
