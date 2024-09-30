@@ -8,7 +8,7 @@ use App\Transformers\UserSearchTransform;
 
 class UserController extends Controller
 {
-    public function search($query)
+    public function search($lang,$query)
     {
         $user = User::where('name', 'like', '%' . $query . '%')->orWhere('email', 'like', '%' . $query . '%')->get();
         if (count($user) == 0) {
