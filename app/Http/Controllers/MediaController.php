@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Media;
@@ -338,8 +339,27 @@ class MediaController extends Controller
             ], 400);
         }
 
+        $isGrpExist = Group::find($groupId);
+
+        if(!$isGrpExist){
+            return response()->json([
+                'message' => 'Group not found',
+                'status' => 'false'
+            ], 404);
+        }
+
+        $media = GroupMedia::where('group_id', $groupId)->with('sender:name')->get();
+
+        if ($media->isEmpty()) {
+            return response()->json([
+                'message' => 'No media found for the specified group',
+                'status' => 'false'
+            ], 404);
+        }
+
         return response()->json([
             'message' => 'Media retrieved successfully',
+            "data"=>$media
         ]);
     }
 
