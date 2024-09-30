@@ -106,10 +106,11 @@ Route::group(["prefix" => "media"], function () {
         Route::post("organization/group/upload", [MediaController::class, "uploadOrganizationMedia"]);
 
         // get routes
-        // Route::get('{organizationId}', [MediaController::class, 'getAllMediaByOrganization']);
-        Route::get('{org_grpp_id}/group', [MediaController::class, 'getAllMediaByGroup']);
-        // two person organization
-        Route::get('{receiverId}/media', [MediaController::class, 'getAllMediaForTwoPersons']);
-        // Route::get('{groupId}/receiver', [MediaController::class, 'getMediaByReceiver']);
+
+        // organization
+        Route::get('/org/{receiverId}', [MediaController::class, 'getAllMediaForTwoPersons']);
+        Route::get('/org/{org_grp_id}/group', [MediaController::class, 'getAllMediaByGroup']);
+
+        Route::get('{receiverId}', [MediaController::class, 'getMediaByReceiver']);
     });
 });
