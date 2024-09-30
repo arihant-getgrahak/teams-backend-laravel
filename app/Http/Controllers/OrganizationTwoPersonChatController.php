@@ -8,7 +8,7 @@ use App\Models\Organization;
 
 class OrganizationTwoPersonChatController extends Controller
 {
-    public function store(TwoPersonChatRequest $request, $organizationId)
+    public function store(TwoPersonChatRequest $request, string $lan,$organizationId)
     {
         $organization = Organization::findOrFail($organizationId);
         $message = OrganizationTwoPersonChat::create([
@@ -21,7 +21,7 @@ class OrganizationTwoPersonChatController extends Controller
         return response()->json($message);
     }
 
-    public function index($organizationId, $senderId, $receiverId)
+    public function index(string $lan,$organizationId, $senderId, $receiverId)
     {
         $messages = OrganizationTwoPersonChat::where('organization_id', $organizationId)
             ->where(function ($query) use ($senderId, $receiverId) {

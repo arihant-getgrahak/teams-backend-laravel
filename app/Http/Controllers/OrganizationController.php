@@ -23,7 +23,7 @@ class OrganizationController extends Controller
         return response()->json($organization);
     }
 
-    public function createGroup(CreateGroupRequest $request, $organizationId)
+    public function createGroup(CreateGroupRequest $request, string $lan,$organizationId)
     {
         $organization = Organization::findOrFail($organizationId);
         if ($organization->groups()->where('name', $request->name)->exists()) {
