@@ -13,12 +13,12 @@ use DB;
 
 class MessageController extends Controller
 {
-    public function display(string $id)
+    public function display(string $lan, string $id)
     {
-        if(!User::where("id", $id)->exists()){
+        if (!User::where("id", $id)->exists()) {
             return response()->json([
-                "status"=>false,
-                "message" => __('auth.notfound', ['attribute'=> 'User']),
+                "status" => false,
+                "message" => __('auth.notfound', ['attribute' => 'User']),
             ], 404);
         }
         $message = Message::where(function ($query) use ($id) {
@@ -56,7 +56,7 @@ class MessageController extends Controller
             "message" => $message,
             "sender_id" => auth()->user()->id,
             "receiver_id" => $request->receiver_id,
-            "type"=> $request->type
+            "type" => $request->type
         ];
 
         Message::create($data);
@@ -65,7 +65,7 @@ class MessageController extends Controller
         // SendMessage::dispatch($message);
         return response()->json([
             "status" => true,
-            "message" => __('auth.sent', ['attribute'=> 'Message']),
+            "message" => __('auth.sent', ['attribute' => 'Message']),
         ], 200);
     }
 
@@ -87,9 +87,9 @@ class MessageController extends Controller
             return response()->json([
                 "status" => true,
                 "data" => $message,
-                "message" => __('auth.deleted', ['attribute'=> 'Message']),
+                "message" => __('auth.deleted', ['attribute' => 'Message']),
             ], 200);
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -120,7 +120,7 @@ class MessageController extends Controller
 
             return response()->json([
                 "status" => true,
-                "message" => __('auth.updated', ['attribute'=> 'Message']),
+                "message" => __('auth.updated', ['attribute' => 'Message']),
                 "data" => $message
             ], 200);
 
@@ -132,5 +132,5 @@ class MessageController extends Controller
             ], 500);
         }
     }
-    
+
 }

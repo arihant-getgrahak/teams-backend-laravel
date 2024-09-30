@@ -33,9 +33,11 @@ class LanguageController extends Controller
     {
         App::setLocale($lang);
         return response()->json([
-            "status" => true,
-            "message" => "Translations fetched successfully.",
-            "data" => __("translation"),
+            [
+                "status" => true,
+                "message" => "Translations fetched successfully.",
+                "data" => __("translation"),
+            ]
         ]);
     }
 }
