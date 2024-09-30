@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InviteRequest;
 use App\Models\InviteUser;
 use App\Models\User;
-use Hash;
 use Http;
 use Str;
 use App\Models\Organization;

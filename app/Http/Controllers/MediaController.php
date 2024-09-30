@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\MediaRequest;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use Storage;

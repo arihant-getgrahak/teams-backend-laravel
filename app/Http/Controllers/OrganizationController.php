@@ -7,7 +7,6 @@ use App\Http\Requests\StoreOrganizationRequest;
 use App\Models\OrganizationGroup;
 use App\Http\Requests\AddUserGroupRequest;
 use App\Models\Organization;
-use Request;
 use App\Models\User;
 
 class OrganizationController extends Controller
