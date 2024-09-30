@@ -20,9 +20,9 @@ class MediaController extends Controller
     public function uploadMedia(Request $request)
     {
         $mediaFiles = [];
-        if ($request->hasFile('file')) {
-            if (is_array($request->file('file'))) {
-                foreach ($request->file('file') as $file) {
+        if ($request->hasFile('files')) {
+            if (is_array($request->file('files'))) {
+                foreach ($request->file('files') as $file) {
                     $filename = time() . '-' . $file->getClientOriginalName();
                     $fileurl = $this->uploadImage($file);
                     $filePath = $fileurl;
