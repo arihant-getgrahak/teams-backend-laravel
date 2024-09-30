@@ -25,8 +25,7 @@ class OrganizationGroupMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'files' => 'required|array',
-            'files.*' => 'file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,zip|max:2048',
+            'files' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,zip|max:2048',
             'organization_group_id' => 'required',
         ];
     }

@@ -75,8 +75,14 @@ class MediaController extends Controller
 
     public function uploadOrganizationMedia(OrganizationGroupMediaRequest $request)
     {
-        $organizationGroup = OrganizationGroup::findOrFail($request->organization_group_id);
-        $organizationId = $organizationGroup->organization_id; // Fetch related organization_id
+        $organizationGroup = OrganizationGroup::find($request->organization_group_id);
+        if (!$organizationGroup) {
+            return response()->json([
+                'message' => 'Group not found',
+                'status' => "false"
+            ], status: 400);
+        }
+        $organizationId = $organizationGroup->organization_id;
 
         $sendersId = Auth::id();
 
@@ -105,8 +111,8 @@ class MediaController extends Controller
                 ], 200);
             }
 
-            $filename = time() . '-' . $request->file('file')->getClientOriginalName();
-            $fileurl = $this->uploadImage($request->file('file'));
+            $filename = time() . '-' . $request->file('files')->getClientOriginalName();
+            $fileurl = $this->uploadImage($request->file('files'));
             $filePath = $fileurl;
 
             $media = OrganizationGroupMedia::create([
@@ -131,7 +137,7 @@ class MediaController extends Controller
 
     public function uploadGroupMedia(GroupMediaRequest $request)
     {
-       
+
         $mediaFiles = [];
         if ($request->hasFile('files')) {
             if (is_array($request->file('files'))) {
