@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use Storage;
@@ -130,6 +131,7 @@ class MediaController extends Controller
 
     public function uploadGroupMedia(GroupMediaRequest $request)
     {
+       
         $mediaFiles = [];
         if ($request->hasFile('files')) {
             if (is_array($request->file('files'))) {
@@ -177,51 +179,72 @@ class MediaController extends Controller
 
     public function OrganizationTwoPersonMedia(Request $request)
     {
+        $validate = $request->validate([
+            'receiver_id' => 'required|exists:users,id',
+        ]);
+
+        if (!$validate) {
+            return response()->json([
+                'message' => "Receiver id is required",
+                'status' => 'false'
+            ], 403);
+        }
         $sender = auth()->id();
-        $organizationId = $request->organization_id;
+        $user = User::with('organizations')->where('id', $sender)->first();
+
+        if ($user->organizations[0]["id"] == null) {
+            return response()->json(['message' => 'Organization not found'], 404);
+        }
+
         $receiverId = $request->receiver_id;
 
-        $organization = Organization::findOrFail($organizationId);
-
-        if (!$organization->users()->where('user_id', $sender)->exists()) {
-            return response()->json([
-                'message' => 'Sender does not belong to the specified organization',
-                'status' => 'false'
-            ], 403);
-        }
-
-        if (!$organization->users()->where('user_id', $receiverId)->exists()) {
-            return response()->json([
-                'message' => 'Receiver does not belong to the specified organization',
-                'status' => 'false'
-            ], 403);
-        }
 
         $mediaFiles = [];
         if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
+            if (is_array($request->file('files'))) {
+                foreach ($request->file('files') as $file) {
 
-                $filename = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('organization-media', $filename, 'public'); // Save to the 'organization-media' folder
+                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $fileurl = $this->uploadImage($file);
+                    $filePath = $fileurl;
 
-                $media = OrganizationTwoPersonMedia::create([
-                    'filename' => $filename,
-                    'file_path' => $filePath,
-                    'sender_id' => $sender,
-                    'receiver_id' => $receiverId,
-                    'organization_id' => $organizationId,
-                ]);
+                    $media = OrganizationTwoPersonMedia::create([
+                        'filename' => $filename,
+                        'file_path' => $filePath,
+                        'sender_id' => $sender,
+                        'receiver_id' => $receiverId,
+                        'organization_id' => $user->organizations[0]["id"],
+                    ]);
 
-                $mediaFiles[] = $media;
+                    $mediaFiles[] = $media;
+                }
+                return response()->json([
+                    'message' => 'Files uploaded successfully',
+                    'media' => $mediaFiles
+                ], 200);
             }
+            $filename = time() . '-' . $request->file('files')->getClientOriginalName();
+            $fileurl = $this->uploadImage($request->file('files'));
+            $filePath = $fileurl;
 
+            $media = OrganizationTwoPersonMedia::create([
+                'filename' => $filename,
+                'file_path' => $filePath,
+                'sender_id' => $sender,
+                'receiver_id' => $receiverId,
+                'organization_id' => $user->organizations[0]["id"],
+
+            ]);
             return response()->json([
                 'message' => 'Files uploaded successfully',
-                'media' => $mediaFiles
+                'media' => $media
             ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Please upload file',
+                'status' => "false"
+            ], status: 400);
         }
-
-        return response()->json(['message' => 'No files uploaded'], 400);
     }
 
     public function getAllMediaByOrganization($lang, $organizationId)

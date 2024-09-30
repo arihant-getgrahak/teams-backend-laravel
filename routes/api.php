@@ -101,9 +101,11 @@ Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
 Route::group(["prefix" => "media"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("upload", [MediaController::class, "uploadMedia"]);
-        Route::post("organization/upload", [MediaController::class, "uploadOrganizationMedia"]);
+        Route::post("organization/group/upload", [MediaController::class, "uploadOrganizationMedia"]);
         Route::post("group/upload", [MediaController::class, "uploadGroupMedia"]);
-        Route::post("organization/two/person/upload", [MediaController::class, "OrganizationTwoPersonMedia"]);
+        Route::post("organization/upload", [MediaController::class, "OrganizationTwoPersonMedia"]);
+
+        // get routes
         Route::get('{organizationId}/media', [MediaController::class, 'getAllMediaByOrganization']);
         Route::get('{OrganizationGroupID}/group/upload', [MediaController::class, 'getAllMediaByGroup']);
         Route::get('{organizationId}/users/{senderId}/{receiverId}/two/person/media', [MediaController::class, 'getAllMediaForTwoPersons']);
