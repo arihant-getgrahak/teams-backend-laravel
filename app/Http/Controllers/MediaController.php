@@ -17,6 +17,18 @@ class MediaController extends Controller
 {
     public function uploadMedia(Request $request)
     {
+        $validate = $request->validate([
+            'receiver_id' => 'required|exists:users,id',
+        ]);
+
+        if (!$validate) {
+            return response()->json([
+                'message' => "Receiver id is required",
+                'status' => 'false'
+            ], 403);
+        }
+
+
         $mediaFiles = [];
         if ($request->hasFile('files')) {
             if (is_array($request->file('files'))) {
@@ -28,7 +40,6 @@ class MediaController extends Controller
                     $media = Media::create([
                         'filename' => $filename,
                         'file_path' => $filePath,
-
                         'receiver_id' => $request->receiver_id,
                     ]);
 
@@ -40,14 +51,13 @@ class MediaController extends Controller
                 ], 200);
             }
 
-            $filename = time() . '-' . $request->file('file')->getClientOriginalName();
-            $fileurl = $this->uploadImage($request->file('file'));
+            $filename = time() . '-' . $request->file('files')->getClientOriginalName();
+            $fileurl = $this->uploadImage($request->file('files'));
             $filePath = $fileurl;
 
             $media = Media::create([
                 'filename' => $filename,
                 'file_path' => $filePath,
-
                 'receiver_id' => $request->receiver_id,
             ]);
             return response()->json([

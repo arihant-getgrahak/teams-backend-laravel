@@ -98,7 +98,7 @@ Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyTo
 Route::get("/languages", [LanguageController::class, "index"]);
 Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
 
-Route::group(["prefix" => "{local}/media"], function () {
+Route::group(["prefix" => "media"], function () {
     Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
         Route::post("upload", [MediaController::class, "uploadMedia"]);
         Route::post("organization/upload", [MediaController::class, "uploadOrganizationMedia"]);
