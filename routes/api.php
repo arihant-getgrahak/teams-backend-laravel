@@ -95,3 +95,4 @@ Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyTo
 
 Route::get("/languages", [LanguageController::class, "index"]);
 Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
+
