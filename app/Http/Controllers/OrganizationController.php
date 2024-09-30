@@ -7,7 +7,7 @@ use App\Http\Requests\StoreOrganizationRequest;
 use App\Models\OrganizationGroup;
 use App\Http\Requests\AddUserGroupRequest;
 use App\Models\Organization;
-use Request;
+use App\Models\User;
 
 class OrganizationController extends Controller
 {
@@ -23,7 +23,7 @@ class OrganizationController extends Controller
         return response()->json($organization);
     }
 
-    public function createGroup(CreateGroupRequest $request, string $lan,$organizationId)
+    public function createGroup(CreateGroupRequest $request, string $lan, $organizationId)
     {
         $organization = Organization::findOrFail($organizationId);
         if ($organization->groups()->where('name', $request->name)->exists()) {
@@ -48,7 +48,7 @@ class OrganizationController extends Controller
         $isGroupExist = OrganizationGroup::where('id', $request->group_id)->first();
         if (!$isGroupExist) {
             return response()->json([
-                'message' => __('auth.notexists', ['attribute'=> 'Group']),
+                'message' => __('auth.notexists', ['attribute' => 'Group']),
                 "status" => false
             ], 409);
         }
@@ -56,13 +56,13 @@ class OrganizationController extends Controller
         $userExists = $isGroupExist->users->contains('id', $request->user_id);
         if ($userExists) {
             return response()->json([
-                'message' => __('auth.alreadyadded', ['attribute'=> 'User']),
+                'message' => __('auth.alreadyadded', ['attribute' => 'User']),
             ], 409);
         }
         $userExists = $isGroupExist->users->contains('id', $request->second_user_id);
         if ($userExists) {
             return response()->json([
-                'message' => __('auth.alreadyadded', ['attribute'=> 'SecondUser']),
+                'message' => __('auth.alreadyadded', ['attribute' => 'SecondUser']),
             ], 409);
         }
         $isGroupExist->users()->attach($request->user_id);
@@ -70,8 +70,34 @@ class OrganizationController extends Controller
 
         return response()->json([
             "status" => true,
-            "message" => __('auth.added', ['attribute'=> 'User']),
+            "message" => __('auth.added', ['attribute' => 'User']),
             "data" => $isGroupExist->users
         ], 200);
     }
+
+    public function addUserToOrganization(AddUserToOrganizationRequest $request, $lang, $organizationId)
+    {
+        $organization = Organization::findOrFail($organizationId);
+
+        $userId = $request->user_id;
+        
+        $user = User::findOrFail($userId);
+
+        if ($organization->users()->where('user_id', $userId)->exists()) {
+            return response()->json([
+                'message' => 'User is already in this organization',
+                'status' => 'false'
+            ], 409);
+        }
+
+        $organization->users()->attach($userId);
+
+        return response()->json([
+            'message' => 'User added to organization successfully',
+            'status' => 'true',
+            'organization' => $organization,
+            'user' => $user
+        ], 200);
+    }
+
 }

@@ -73,4 +73,9 @@ class User extends Authenticatable implements JWTSubject
             "email" => $this->email,
         ];
     }
+
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user', 'user_id', 'organization_id')->withTimestamps();
+    }
 }
