@@ -82,6 +82,8 @@ Route::group(["prefix" => "{local}/organization"], function () {
         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
 
+        Route::post('{organizationId}/add-user', [OrganizationController::class, 'AddUserToOrganization']);
+
     });
 });
 
@@ -102,5 +104,9 @@ Route::group(["prefix" => "{local}/media"], function () {
         Route::post("organization/upload", [MediaController::class, "uploadOrganizationMedia"]);
         Route::post("group/upload", [MediaController::class, "uploadGroupMedia"]);
         Route::post("organization/two/person/upload", [MediaController::class, "OrganizationTwoPersonMedia"]);
+        Route::get('{organizationId}/media', [MediaController::class, 'getAllMediaByOrganization']);
+        Route::get('{OrganizationGroupID}/group/upload', [MediaController::class, 'getAllMediaByGroup']);
+        Route::get('{organizationId}/users/{senderId}/{receiverId}/two/person/media', [MediaController::class, 'getAllMediaForTwoPersons']);
+        Route::get('{receiverId}/receiver', [MediaController::class, 'getMediaByReceiver']);
     });
 });
