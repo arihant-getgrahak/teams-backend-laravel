@@ -32,7 +32,7 @@ class GroupController extends Controller
         $response = fractal($group, new GroupDisplayTransform())->toArray();
         return response()->json([
             "status" => true,
-            "message" => __("auth.fetched", ["attribute"=> "Group"]),
+            "message" => __("auth.fetched", ["attribute" => "Group"]),
             "data" => $response["data"][0]["data"]
             // "Data" => $group
         ], 200);
@@ -45,31 +45,31 @@ class GroupController extends Controller
 
         if ($group->users()->find($request->user_id)) {
             return response()->json([
-                "message" => __('auth.added', ['attribute'=> 'User']),
+                "message" => __('auth.added', ['attribute' => 'User']),
                 "status" => false
             ], 500);
         }
         $group->users()->attach($request->user_id);
         return response()->json([
             "status" => true,
-            "message" => __('auth.add', ['attribute'=> 'User']),
+            "message" => __('auth.add', ['attribute' => 'User']),
             "data" => $group
         ], 200);
     }
 
-    public function deleteGroup($group_id)
+    public function deleteGroup(string $lan, $group_id)
     {
         $group = Group::find($group_id);
         if (!$group) {
             return response()->json([
                 "status" => false,
-                "message" => __('auth.notfound', ['attribute'=> 'Group']),
+                "message" => __('auth.notfound', ['attribute' => 'Group']),
             ], 500);
         }
         $group->delete();
         return response()->json([
             'status' => true,
-            'message' => __('auth.deleted', ['attribute'=> 'Group']),
+            'message' => __('auth.deleted', ['attribute' => 'Group']),
         ], 200);
     }
 
@@ -83,7 +83,7 @@ class GroupController extends Controller
             DB::commit();
             return response()->json([
                 "status" => true,
-                "message" => __('auth.sent', ['attribute'=> 'Message']),
+                "message" => __('auth.sent', ['attribute' => 'Message']),
                 "data" => $data
             ]);
         } catch (\Exception $e) {
@@ -95,13 +95,13 @@ class GroupController extends Controller
         }
     }
 
-    public function getGroupMessages($group_id)
+    public function getGroupMessages(string $lan, $group_id)
     {
         $group = Group::find($group_id);
         if (!$group) {
             return response()->json([
                 "status" => false,
-                "message" => __('auth.notfound', ['attribute'=> 'Group']),
+                "message" => __('auth.notfound', ['attribute' => 'Group']),
             ], 500);
         }
 
@@ -109,11 +109,11 @@ class GroupController extends Controller
             ->with('user:id,name')->paginate(20);
         return response()->json([
             'status' => true,
-            'message' => __('auth.fetched', ['attribute'=> 'GroupMessage']),
+            'message' => __('auth.fetched', ['attribute' => 'GroupMessage']),
             'data' => $message,
         ], 200);
     }
-    public function updateMessage(GroupChatUpdateRequest $request, $message_id)
+    public function updateMessage(GroupChatUpdateRequest $request, string $lan, $message_id)
     {
         DB::beginTransaction();
         try {
@@ -121,14 +121,14 @@ class GroupController extends Controller
             if (!$group) {
                 return response()->json([
                     "status" => false,
-                    "message" => __('auth.notfound', ['attribute'=> 'Group']),
+                    "message" => __('auth.notfound', ['attribute' => 'Group']),
                 ], 500);
             }
             $message = GroupMessage::find($message_id);
             if (!$message) {
                 return response()->json([
                     "status" => false,
-                    "message" => __('auth.notfound', ['attribute'=> 'Message']),
+                    "message" => __('auth.notfound', ['attribute' => 'Message']),
                 ], 500);
             }
 
@@ -145,7 +145,7 @@ class GroupController extends Controller
             DB::commit();
             return response()->json([
                 'status' => true,
-                'message' => __('auth.updated', ['attribute'=> 'Message']),
+                'message' => __('auth.updated', ['attribute' => 'Message']),
                 'data' => $message
             ], 200);
 
@@ -157,7 +157,7 @@ class GroupController extends Controller
             ], 500);
         }
     }
-    public function deleteMessage($group_id, $message_id)
+    public function deleteMessage(string $lan, $group_id, $message_id)
     {
         DB::beginTransaction();
         try {
@@ -165,27 +165,27 @@ class GroupController extends Controller
             if (!$group) {
                 return response()->json([
                     "status" => false,
-                    "message" => __("auth.notfound", ["attribute"=> "Group"]),
+                    "message" => __("auth.notfound", ["attribute" => "Group"]),
                 ], 500);
             }
             $message = GroupMessage::find($message_id);
             if (!$message) {
                 return response()->json([
                     "status" => false,
-                    "message" => __("auth.notfound", ["attribute"=> "Message"]),
+                    "message" => __("auth.notfound", ["attribute" => "Message"]),
                 ], 500);
             }
             if ($message->isDelete) {
                 return response()->json([
                     "status" => false,
-                    "message" => __('auth.alreadydeleted', ['attribute'=> 'Message']),
+                    "message" => __('auth.alreadydeleted', ['attribute' => 'Message']),
                 ], 500);
             }
             $message->update(["message" => "This Message has been deleted", "isDelete" => true, "deletedAt" => now()]);
             DB::commit();
             return response()->json([
                 'status' => true,
-                'message' => __('auth.deleted', ['attribute'=> 'Message']),
+                'message' => __('auth.deleted', ['attribute' => 'Message']),
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
