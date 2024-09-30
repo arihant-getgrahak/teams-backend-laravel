@@ -176,7 +176,6 @@ class MediaController extends Controller
         $organization = Organization::findOrFail($organizationId);
 
         if (!$organization->users()->where('user_id', $sender)->exists()) {
-            // Log::error('Sender does not belong to this organization');
             return response()->json([
                 'message' => 'Sender does not belong to the specified organization',
                 'status' => 'false'
@@ -184,7 +183,6 @@ class MediaController extends Controller
         }
 
         if (!$organization->users()->where('user_id', $receiverId)->exists()) {
-            // Log::error('Receiver does not belong to this organization');
             return response()->json([
                 'message' => 'Receiver does not belong to the specified organization',
                 'status' => 'false'
