@@ -109,8 +109,10 @@ Route::group(["prefix" => "media"], function () {
 
         // organization
         Route::get('/org/{receiverId}', [MediaController::class, 'getAllMediaForTwoPersons']);
-        Route::get('/org/{org_grp_id}/group', [MediaController::class, 'getAllMediaByGroup']);
+        Route::get('/org/{org_grp_id}/group', [MediaController::class, 'getAllMediaByOrgGroup']);
 
-        Route::get('{receiverId}', [MediaController::class, 'getMediaByReceiver']);
+        Route::get('{receiverId}/user', [MediaController::class, 'getMediaByReceiver']);
+        Route::get('{groupId}/group', [MediaController::class, 'getAllMediaByGroup']);
+
     });
 });

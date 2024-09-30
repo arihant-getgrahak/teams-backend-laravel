@@ -271,7 +271,7 @@ class MediaController extends Controller
     //     ], 200);
     // }
 
-    public function getAllMediaByGroup($groupId)
+    public function getAllMediaByOrgGroup($groupId)
     {
 
         $media = OrganizationGroupMedia::where('organization_group_id', $groupId)->get();
@@ -327,6 +327,20 @@ class MediaController extends Controller
             'message' => 'Media retrieved successfully',
             'media' => $mediaFiles
         ], 200);
+    }
+
+    public function getAllMediaByGroup($groupId){
+
+        if($groupId == null){
+            return response()->json([
+                'message' => 'Group id is required',
+                'status' => 'false'
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Media retrieved successfully',
+        ]);
     }
 
     protected function uploadImage($file)
