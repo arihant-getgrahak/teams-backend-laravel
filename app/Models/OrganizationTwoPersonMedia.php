@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
-class Organization extends Model
+class OrganizationTwoPersonMedia extends Model
 {
     use HasFactory;
+
     public static function boot()
     {
         parent::boot();
@@ -16,28 +17,31 @@ class Organization extends Model
             $model->id = Str::uuid();
         });
     }
+
     protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected $fillable = [
-        'name',
-        'description',
-        "created_by"
+        'filename',
+        'file_path',
+        'sender_id',
+        'receiver_id',
+        'organization_id',
     ];
 
-    public function users()
+    public function sender()
     {
-        return $this->belongsToMany(User::class, 'organization_user', 'organization_id', 'user_id');
-    }
-    public function groups()
-    {
-        return $this->hasMany(OrganizationGroup::class);
+        return $this->belongsTo(User::class, "sender_id");
     }
 
-    public function createdBy()
+    public function receiver()
     {
-        return $this->belongsTo(User::class, "created_by");
+        return $this->belongsTo(User::class, "receiver_id");
     }
 
-    
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, "organization_id");
+    }
 }

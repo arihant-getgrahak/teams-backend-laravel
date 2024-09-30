@@ -12,7 +12,7 @@ use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UpdateProfileController;
-
+use App\Http\Controllers\MediaController;
 use App\Http\Middleware\LanguageMiddleware;
 
 Route::get("/", function () {
@@ -82,6 +82,8 @@ Route::group(["prefix" => "{local}/organization"], function () {
         Route::post('/{organizationId}/two_person_chats', [OrganizationTwoPersonChatController::class, 'store']);
         Route::get('/{organizationId}/two_person_chats/{senderId}/{receiverId}', [OrganizationTwoPersonChatController::class, 'index']);
 
+        Route::post('{organizationId}/add-user', [OrganizationController::class, 'AddUserToOrganization']);
+
     });
 });
 
@@ -95,3 +97,22 @@ Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyTo
 
 Route::get("/languages", [LanguageController::class, "index"]);
 Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
+
+Route::group(["prefix" => "media"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
+        Route::post("upload", [MediaController::class, "uploadMedia"]);
+        Route::post("group/upload", [MediaController::class, "uploadGroupMedia"]);
+        Route::post("organization/upload", [MediaController::class, "OrganizationTwoPersonMedia"]);
+        Route::post("organization/group/upload", [MediaController::class, "uploadOrganizationMedia"]);
+
+        // get routes
+
+        // organization
+        Route::get('/org/{receiverId}', [MediaController::class, 'getAllMediaForTwoPersons']);
+        Route::get('/org/{org_grp_id}/group', [MediaController::class, 'getAllMediaByOrgGroup']);
+
+        Route::get('{receiverId}/user', [MediaController::class, 'getMediaByReceiver']);
+        Route::get('{groupId}/group', [MediaController::class, 'getAllMediaByGroup']);
+
+    });
+});

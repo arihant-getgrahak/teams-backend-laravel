@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App;
-use App\Events\MessageSendEvent;
 
 class LanguageController extends Controller
 {

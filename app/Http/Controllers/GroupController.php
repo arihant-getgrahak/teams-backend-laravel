@@ -195,5 +195,24 @@ class GroupController extends Controller
             ], 500);
         }
     }
+
+    public function display(string $lan, string $id)
+    {
+        $group = Group::find($id);
+        if (!$group) {
+            return response()->json([
+                "status" => false,
+                "message" => __('auth.notfound', ['attribute' => 'Group']),
+            ], 500);
+        }
+        $group = [$group];
+        $response = fractal($group, new GroupDisplayTransform())->toArray();
+        return response()->json([
+            "status" => true,
+            "message" => __("auth.fetched", ["attribute" => "Group"]),
+            "data" => $response["data"][0]["data"]
+            // "Data" => $group
+        ], 200);
+    }
 }
 
