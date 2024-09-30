@@ -12,7 +12,7 @@ use App\Http\Controllers\OrganizationGroupMessageController;
 use App\Http\Controllers\OrganizationTwoPersonChatController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UpdateProfileController;
-
+use App\Http\Controllers\MediaController;
 use App\Http\Middleware\LanguageMiddleware;
 
 Route::get("/", function () {
@@ -96,3 +96,11 @@ Route::get("invite/{userId}/verify/{token}", [InviteController::class, "verifyTo
 Route::get("/languages", [LanguageController::class, "index"]);
 Route::get("/translation/{lang}", [LanguageController::class, "translation"]);
 
+Route::group(["prefix" => "{local}/media"], function () {
+    Route::group(["middleware" => ["auth:api", LanguageMiddleware::class]], function () {
+        Route::post("upload", [MediaController::class, "uploadMedia"]);
+        Route::post("organization/upload", [MediaController::class, "uploadOrganizationMedia"]);
+        Route::post("group/upload", [MediaController::class, "uploadGroupMedia"]);
+        Route::post("organization/two/person/upload", [MediaController::class, "OrganizationTwoPersonMedia"]);
+    });
+});
