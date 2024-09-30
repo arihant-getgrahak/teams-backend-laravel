@@ -9,7 +9,7 @@ class OrganizationGroupMedia extends Model
 {
     use HasFactory;
 
-    public function boot()
+    public static function boot()
     {
         parent::boot();
 
