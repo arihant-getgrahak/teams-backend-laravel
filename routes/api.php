@@ -108,8 +108,6 @@ Route::group(["prefix" => "media"], function () {
         Route::post("organization/group/upload", [MediaController::class, "uploadOrganizationMedia"]);
 
         // get routes
-
-        // organization
         Route::get('/org/{receiverId}', [MediaController::class, 'getAllMediaForTwoPersons']);
         Route::get('/org/{org_grp_id}/group', [MediaController::class, 'getAllMediaByOrgGroup']);
 
@@ -119,6 +117,6 @@ Route::group(["prefix" => "media"], function () {
     });
 });
 
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/audits', [AuditController::class, 'index']);
+Route::group(["middleware" => "auth:api"], function () {
+    Route::get("/audit", [AuditController::class, "index"]);
 });
