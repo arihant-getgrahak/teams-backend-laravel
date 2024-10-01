@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Meeting extends Model
+
+
+class Meeting extends Model implements Auditable
 {
     use HasFactory;
+
+    use \OwenIt\Auditing\Auditable;
     public static function boot()
     {
         parent::boot();
