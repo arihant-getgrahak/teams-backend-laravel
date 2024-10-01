@@ -8,7 +8,7 @@ use App\Models\OrganizationGroup;
 use App\Http\Requests\AddUserGroupRequest;
 use App\Models\Organization;
 use App\Models\User;
-
+use Cache;
 class OrganizationController extends Controller
 {
     public function store(StoreOrganizationRequest $request)
@@ -19,6 +19,9 @@ class OrganizationController extends Controller
             "created_by" => auth()->user()->id
         ];
         $organization = Organization::create($data);
+
+        Cache::put("organization_{$organization->id}", $organization);
+
         $organization->users()->attach(auth()->user()->id);
         return response()->json($organization);
     }
@@ -26,10 +29,13 @@ class OrganizationController extends Controller
     public function createGroup(CreateGroupRequest $request, string $lan, $organizationId)
     {
         $organization = Organization::findOrFail($organizationId);
+
         if ($organization->groups()->where('name', $request->name)->exists()) {
             return response()->json(['message' => __('auth.same', ['attribute' => 'Group'])], 409);
         }
         $group = $organization->groups()->create($request->all());
+
+        Cache::put("organization_group_{$group->id}", $group);
         return response()->json($group);
     }
 
