@@ -16,5 +16,27 @@ test('authTest', function () {
             'message' => $response->json('message'),
         ]);
     }
+
+     // Register Test
+     $response = $this->postJson('/api/en/auth/register', [
+        'email' => "admin7@admin.com",
+        'password' => '12345',
+        "name" => "Arihant Jain",
+        "designation" => "Developer",
+        "language" => "en",
+    ]);
+
+    if ($response->status() == 422) {
+        foreach ($response->json('errors') as $key => $value) {
+            dd($value[0]);
+        }
+    } else {
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'status' => $response->json('status'),
+            'message' => $response->json('message'),
+        ]);
+    }
 });
 
