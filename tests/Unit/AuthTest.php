@@ -3,7 +3,7 @@ use Illuminate\Database\Events\DatabaseRefreshed;
 test('authTest', function () {
     // Login Test
     $response = $this->postJson('/api/en/auth/login', [
-        'email' => "admin7@admin.com",
+        'email' => "admin1@admin.com",
         'password' => '123456789',
     ]);
 

@@ -1,42 +1,7 @@
 <?php
-use Illuminate\Database\Events\DatabaseRefreshed;
-test('authTest', function () {
-    // Login Test
-    $response = $this->postJson('/api/en/auth/login', [
-        'email' => "admin6@admin.com",
-        'password' => '123456789',
-    ]);
 
-    if ($response->status() == 401) {
-        dd($response->json('message'));
-    } else {
-        $response->assertStatus(200);
-        $response->assertJson([
-            'token' => $response->json('token'),
-            'message' => $response->json('message'),
-        ]);
-    }
+it('returns a successful response', function () {
+    $response = $this->get('/api');
 
-     // Register Test
-     $response = $this->postJson('/api/en/auth/register', [
-        'email' => "admin7@admin.com",
-        'password' => '12345',
-        "name" => "Arihant Jain",
-        "designation" => "Developer",
-        "language" => "en",
-    ]);
-
-    if ($response->status() == 422) {
-        foreach ($response->json('errors') as $key => $value) {
-            dd($value[0]);
-        }
-    } else {
-        $response->assertStatus(200);
-
-        $response->assertJson([
-            'status' => $response->json('status'),
-            'message' => $response->json('message'),
-        ]);
-    }
+    $response->assertStatus(200);
 });
-
