@@ -13,6 +13,7 @@
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "owen-it/laravel-auditing": "^13.6",
         "spatie/laravel-fractal": "^6.2",
         "tymon/jwt-auth": "^2.1"
     },

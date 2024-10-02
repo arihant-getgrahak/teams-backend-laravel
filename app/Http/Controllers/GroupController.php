@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\GroupMessage;
 use DB;
 use App\Transformers\GroupDisplayTransform;
+use Cache;
 
 class GroupController extends Controller
 {
@@ -19,6 +20,10 @@ class GroupController extends Controller
             "created_by" => auth()->user()->id,
         ];
         $group = Group::create($data);
+
+        Cache::put("group_{$group->id}", $group);
+
+
         return response()->json([
             "message" => __('auth.created', ['attribute' => 'Group']),
             "data" => $group
@@ -27,7 +32,10 @@ class GroupController extends Controller
 
     public function displayGroup()
     {
-        $group = Group::with(['createdBy:id,name', "users:id,name"])->get();
+        $group = Cache::remember('groups', 60, function () {
+            return Group::with(['createdBy:id,name', "users:id,name"])->get();
+
+        });
         $group = [$group];
         $response = fractal($group, new GroupDisplayTransform())->toArray();
         return response()->json([
@@ -50,6 +58,7 @@ class GroupController extends Controller
             ], 500);
         }
         $group->users()->attach($request->user_id);
+
         return response()->json([
             "status" => true,
             "message" => __('auth.add', ['attribute' => 'User']),
@@ -67,6 +76,11 @@ class GroupController extends Controller
             ], 500);
         }
         $group->delete();
+
+        Cache::forget("groups");
+        Cache::forget("group_{$group_id}");
+        Cache::forget("group_messages_{$group_id}");
+
         return response()->json([
             'status' => true,
             'message' => __('auth.deleted', ['attribute' => 'Group']),
@@ -80,6 +94,7 @@ class GroupController extends Controller
         try {
             // dd($request->all());
             $data = GroupMessage::create($request->all());
+
             DB::commit();
             return response()->json([
                 "status" => true,
@@ -106,7 +121,9 @@ class GroupController extends Controller
         }
 
         $message = GroupMessage::where("group_id", $group_id)
-            ->with('user:id,name')->paginate(20);
+            ->with('user:id,name')
+            ->paginate(20);
+
         return response()->json([
             'status' => true,
             'message' => __('auth.fetched', ['attribute' => 'GroupMessage']),

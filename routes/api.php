@@ -14,6 +14,8 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UpdateProfileController;
 use App\Http\Controllers\MediaController;
 use App\Http\Middleware\LanguageMiddleware;
+use App\Http\Controllers\AuditController;
+
 
 Route::get("/", function () {
     return response()->json([
@@ -115,4 +117,8 @@ Route::group(["prefix" => "media"], function () {
         Route::get('{groupId}/group', [MediaController::class, 'getAllMediaByGroup']);
 
     });
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/audits', [AuditController::class, 'index']);
 });
