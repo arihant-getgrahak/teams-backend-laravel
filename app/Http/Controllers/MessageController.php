@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSendEvent;
+// use App\Events\MessageSendEvent;
 use App\Models\Message;
 use App\Models\User;
 use App\Http\Requests\MessageRequest;
@@ -61,7 +61,7 @@ class MessageController extends Controller
 
         Message::create($data);
 
-        broadcast(new MessageSendEvent($data))->toOthers();
+        // broadcast(new MessageSendEvent($data))->toOthers();
         // SendMessage::dispatch($message);
         return response()->json([
             "status" => true,
