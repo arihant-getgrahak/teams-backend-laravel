@@ -119,6 +119,6 @@ Route::group(["prefix" => "media"], function () {
     });
 });
 
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/audits', [AuditController::class, 'index']);
+Route::group(["middleware" => "auth:api"], function () {
+    Route::get("/audit", [AuditController::class, "index"]);
 });
